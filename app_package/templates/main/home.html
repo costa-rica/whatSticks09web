@@ -1,0 +1,77 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+<section class = "home">
+  <!-- <div class="not_nav"> -->
+
+    <div class="home_body">
+  
+      <div class="home_buttons">
+
+        <a class="div_button home_register" href="">
+          Register
+        </a>
+        
+        <a class="div_button home_login" href="">
+          Login
+        </a>
+  
+      </div>
+
+      <div class="div_writing">
+        <div class = "writing_content">
+          What Sticks (WS) is an application that helps navigate your wellness with data already being collected by your other applications and devices.
+            <br><br>
+    
+            Availible now to analyze your:
+            <ul>
+              <li>Apple Health step count</li>
+              <li>Oura Ring sleep quality</li>
+              <li>Local weather</li>
+            </ul>
+
+        </div>
+
+
+        {% if blog != '' %}
+        <h2>Latest Findings</h2>
+
+        <ul class="data_tools_list">
+          
+          <li>
+            <a href="{{ url_for('blog.blog_template', blog_name=blog['blog_name']) }}">
+              <div class="data_tool_div">
+
+
+                <div class="date_div">
+                  {{ blog['date_published'] }}
+                </div>
+
+                <div class="title_div">
+                  <h2>{{ blog['title'] }}</h2>
+                </div>
+
+
+                <div class="data_tools_description">
+                  {{ blog['description'] }}
+                </div>
+                  
+              </div>
+            </a>
+          </li>
+
+          
+        </ul>
+        {% endif %}
+
+
+
+      </div>
+
+    </div>
+
+  <!-- </div> -->
+
+</section>
+
+{% endblock %}

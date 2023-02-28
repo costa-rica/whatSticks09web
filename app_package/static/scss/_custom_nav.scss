@@ -1,0 +1,193 @@
+
+/* Flash */
+.flash_custom_parent {
+    position: relative;
+    .alert_custom {
+        position: absolute;
+        top: var(--nav-height);
+        width: 100%;
+        .close_right {
+            float: right;
+        }
+    }
+}
+
+
+/* Navbar */
+section.navbar_section {
+    position: fixed; // <--HERE
+    z-index: 1;      // <--HERE
+    padding-top: 0;
+    margin-top:0;
+    .navbar_custom{
+        justify-content: flex-start;
+        position: fixed;
+        width:100%;
+        height: 5rem;
+        .nav_left{
+            padding-left: 2rem;
+            height: 6rem;
+            padding-top: -1rem;
+            margin-top:0;
+            a{
+                text-decoration: none;
+                font-weight: bold;
+                font-size: large;
+                color: var(--bs-info);
+                padding-top: 0;
+                margin-top:0;
+            }
+            // .dandd_logo{
+            //     height:4rem;
+            //     margin-top: -.5rem;
+            // }
+            .ws_logo_big{
+                display:none
+            }
+            .ws_logo_small {
+                height:4rem;
+                margin-top: -.5rem;
+            }
+        }
+        .middle_nav_div {
+            display: none;
+        }
+        nav.menu-btn{display:block;}
+        nav {display: none;}
+        .mobile-menu{
+            position: absolute;
+            cursor: pointer;
+            right:1rem;
+            height: 5rem;
+        }
+        nav {
+            position: fixed;
+            // z-index: 1;
+            width: 50%;
+            right: 0;
+            top: 0;
+            background: var(--bs-gray-500);
+            height: 100%;
+            font-size: 1.25rem;
+            ul {
+                list-style-type: none;
+                padding:2rem 1rem 0 0;
+                li{
+
+                    
+                    a{
+                        text-decoration: none;
+                        display: block;
+                        padding: .5em 10px .5em 0;
+                        
+                        text-align: right;
+                        cursor: pointer;
+                        &:hover {font-weight: bold;}
+                    }    
+                }
+            }
+            // .special_small{
+            //     font-size: 1.25rem;
+            // }
+            .dropdown-menu{
+                background-color: var(--bs-gray-700);
+                // background-color: green;
+                min-width: 100%;
+                // width:95%;
+                // margin-right:5rem;
+
+                .dropdown-item{
+                    color: var(--bs-gray-100);
+                    text-align: center;
+                    // font-size: 2rem;
+                }
+
+            }
+
+            .mobile-menu-exit{
+                float: right;
+                margin: .5em;
+                cursor: pointer;
+            }
+            .dropdown{
+                background-color: none;
+                &:hover {background-color: none;}
+            }
+        }
+    }
+}
+
+/* Footer */
+.footer{
+    margin-top: auto;// added 20230130 - to get footer on bottom - also see body
+    padding: 1rem 3rem var(--nav-height) 3rem;
+    background-color: var(--bs-gray-200);
+    // height: auto !important;
+    // height:auto;
+    // flex-grow: 2;
+    // min-height: 100%;
+    .footer_right{
+        // display:flex;
+        // justify-content: end;
+        // flex-wrap:wrap;
+        .footer_link_item{
+            width: 100%;
+            
+            display:flex;
+            justify-content: end;
+            padding-right: 3rem;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    section.navbar_section {
+        .navbar_custom{
+            height: 9rem;
+            .left_and_middle{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 0 1rem 0;
+                width: 80%;
+                .nav_left{
+                    flex:1;
+                    .ws_logo_big{
+                        height:7rem;
+                        display:inline;
+                    }
+                    .ws_logo_small {
+                        display:none;
+                    }
+                }
+                .middle_nav_div {
+                    flex:5;
+                    text-align: center;
+                    display: inline;
+                    h1{
+                        font-size: 4rem;
+                        margin-bottom:0;
+                        color: var(--bs-gray-200)
+                    }
+                    h3 {color: var(--bs-gray-200)}
+                }
+            }
+            nav{
+                width:30%;
+                max-width:20rem;
+                font-size: 2rem;
+                .dropdown-item{
+                    font-size: 2rem;
+                }
+            }
+            .mobile-menu{
+                right:1rem;
+                height: 100%;
+            }
+        }
+    }
+    .footer{
+        font-size: 2rem;
+    }
+}
+

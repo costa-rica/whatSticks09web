@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='../static/css/main.css') }}">
+        
+    <!-- Import the Bootstrap stylesheet -->
+    <script src="../static/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="../static/node_modules/jquery/dist/jquery.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="../static/node_modules/bootstrap/dist/css/bootstrap.css"/> -->
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" type="text/css" href="../static/datatables/datatables.min.css"/>
+    <script type="text/javascript" src="../static/datatables/datatables.min.js"></script>
+    <!-- Grandfathering this one in case something stops workign but I think I just need the bottom two
+        <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script> -->
+
+
+
+
+
+
+    <title>whatsticks</title>
+</head>
+<body >
+    <section class="navbar_section">
+
+
+    <div class="navbar navbar_custom  bg-primary " id="nav_section">
+    
+        <div class="left_and_middle">
+            <div class="nav_left">
+                <a href="{{ url_for('main.home') }}" >
+                    <div class="logo">
+                      <img class="ws_logo_big" src="../static/images/wshLogo300px.png" >
+                      <img class="ws_logo_small" src="../static/images/wshLogo_300px_doodle02.png" >
+                    </div>
+                </a>
+            </div>
+           
+    
+            <div class="middle_nav_div">
+                <h1>What Sticks</h1>
+                {% if current_user.is_authenticated %}
+                <h3>{{ current_user.email }}</h3>
+                {% endif %}
+            </div>
+        </div>
+
+        <img class="mobile-menu" id="mobile-cta" src="../static/images/white-hamburger-menu-icon-24.png" alt="Open Navigation">
+
+        <nav>
+            <img id="mobile-exit" class="mobile-menu-exit" src="../static/images/exit.svg" alt="Close Navigation">
+            
+            <ul class="primary-nav ul_primary" id="nav_horizontal_list">
+                {% if current_user.is_authenticated %}
+                <br>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.account') }}">Account</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
+                <li class="nav-item dropdown li_primary">
+                    <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown2"role="button"
+                        data-bs-toggle="dropdown"aria-expanded="false">Dashboards</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a class="dropdown-item dropdown-item_custom" href="">Sleep</a>
+                        <a class="dropdown-item dropdown-item_custom" href="">Steps</a>
+                    </div>
+                </li>
+
+                
+                <br><br>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+                    {% if current_user.post_blog_permission %}
+                    <li class="nav-item li_primary"><a class="nav-link" href="">My Blog Posts</a></li> 
+                    <!-- <li class="nav-item dropdown li_primary">
+                        <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown3"role="button"
+                            data-bs-toggle="dropdown"aria-expanded="false">My Blog Posts</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item dropdown-item_custom" href="{{ url_for('blog.blog_post') }}">Post a Blog</a>
+                            <a class="dropdown-item dropdown-item_custom" href="{{ url_for('blog.blog_post') }}">View My Posts</a>
+                            <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_post') }}">Post a Blog</a></li>
+                            <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_user_home') }}">My Blog Posts</a></li> 
+                        </div>
+                    </li> -->
+
+                    {% endif %}
+                    {% if current_user.admin_blog_permission %}
+                        <li class="nav-item li_primary"><a class="nav-link" href="">Admin Blog</a></li>
+                        <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.admin') }}">Admin</a></li>
+                    {% endif %}
+                
+    
+                {% else %}
+
+
+
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
+       
+                
+                
+                
+                
+                {% endif %}
+            </ul>
+        </nav>
+
+    </section>
+    
+    <div class = "flash_custom_parent" >
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+      
+            <div class="alert alert-{{ category }} alert_custom" id="div_flash"  >
+              <i class="close icon"></i>
+      
+              {{ message }}
+              <div class="close_right">
+                <input type="button" value=&#10006 onclick="removeFlash()" class="btn btn-secondary btn_custom02">
+              </div>
+              
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+      
+      </div>
+
+    {% block main %}{% endblock %}
+
+    <footer class="footer" id="footer_custom">
+
+        <div class=footer_right>
+            <div class="footer_link_item"><a href="{{ url_for('main.about_us') }}">About</a></div>
+            <div class="footer_link_item"><a href="{{ url_for('main.privacy') }}">Privacy</a></div>
+            <div class="footer_link_item"><a href="{{ url_for('main.about_us', _anchor='anchor_for_interested_helping') }}">Interested in helping?</a></div>
+            
+            
+            
+        </div>
+    </footer>
+
+
+<script>
+    const mobileBtn = document.getElementById('mobile-cta')
+        nav = document.querySelector('nav')
+        mobileBtnExit = document.getElementById('mobile-exit');
+
+    mobileBtn.addEventListener('click', () => {
+        nav.classList.add('menu-btn');
+    })
+
+    mobileBtnExit.addEventListener('click', () => {
+        nav.classList.remove('menu-btn');
+    })
+</script>
+
+<!-- Remove flash on click -->
+<script>
+    function removeFlash() {
+        const element = document.getElementById('div_flash');
+        element.remove();
+    }
+</script>
+
+<!-- assign navbar height to --nav-height -->
+<script>document.documentElement.style.setProperty('--nav-height', `${document.getElementById("nav_section").offsetHeight}px`);</script>
+
+</body>
+</html>
