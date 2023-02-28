@@ -6,8 +6,9 @@ from logging.handlers import RotatingFileHandler
 from pytz import timezone
 from datetime import datetime
 
-
+## AFTER rebuild ##
 from ws09_models import login_manager
+from flask_mail import Mail
 
 if os.environ.get('CONFIG_TYPE')=='local':
     config = ConfigLocal()
@@ -51,11 +52,13 @@ logging.getLogger('werkzeug').addHandler(file_handler)
 
 logger_init.info(f'--- Starting API Endpoint Tester ---')
 
+mail = Mail()
 
 def create_app(config_for_flask = config):
     app = Flask(__name__)   
     app.config.from_object(config_for_flask)
     login_manager.init_app(app)
+    mail.init_app(app)
 
     from app_package.main.routes import main
 
