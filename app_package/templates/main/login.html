@@ -5,7 +5,6 @@
   <div class = "register_body">
     <div class = "title">
       {{ page_name }}
-
     </div>
 
     <div class="register_form">
@@ -39,7 +38,7 @@
             <input type="submit" value="Login As Guest" name="btn_login_as_guest" class="btn btn-secondary btn_custom02">
   
             <div class="forgot_password">
-              <a href="">Forgot Password?</a>
+              <a href="{{ url_for('main.reset_password') }}">Forgot Password?</a>
             </div>
           </div>
 

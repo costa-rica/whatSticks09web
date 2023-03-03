@@ -61,7 +61,9 @@ def create_app(config_for_flask = config):
     mail.init_app(app)
 
     from app_package.main.routes import main
+    from app_package.dashboard.routes import dash
 
     app.register_blueprint(main)
+    app.register_blueprint(dash)
 
     return app

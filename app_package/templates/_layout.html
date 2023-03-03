@@ -58,7 +58,7 @@
             <ul class="primary-nav ul_primary" id="nav_horizontal_list">
                 {% if current_user.is_authenticated %}
                 <br>
-                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.account') }}">Account</a></li>
+                
                 <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
                 <li class="nav-item dropdown li_primary">
                     <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown2"role="button"
@@ -71,34 +71,28 @@
 
                 
                 <br><br>
-                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+                
                     {% if current_user.post_blog_permission %}
                     <li class="nav-item li_primary"><a class="nav-link" href="">My Blog Posts</a></li> 
-                    <!-- <li class="nav-item dropdown li_primary">
-                        <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown3"role="button"
-                            data-bs-toggle="dropdown"aria-expanded="false">My Blog Posts</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
-                            <a class="dropdown-item dropdown-item_custom" href="{{ url_for('blog.blog_post') }}">Post a Blog</a>
-                            <a class="dropdown-item dropdown-item_custom" href="{{ url_for('blog.blog_post') }}">View My Posts</a>
-                            <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_post') }}">Post a Blog</a></li>
-                            <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_user_home') }}">My Blog Posts</a></li> 
-                        </div>
-                    </li> -->
+
 
                     {% endif %}
                     {% if current_user.admin_blog_permission %}
                         <li class="nav-item li_primary"><a class="nav-link" href="">Admin Blog</a></li>
                         <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.admin') }}">Admin</a></li>
                     {% endif %}
+                    <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.account') }}">Account</a></li>
+                    <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
                 
     
                 {% else %}
 
 
 
+                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
                 <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
                 <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
-                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
+                
        
                 
                 
