@@ -1,0 +1,279 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+<div id="alert_wrapper"></div>
+<section class="apple">
+
+  <div class="title">
+    Apple Health Data (iPhone Export)
+  </div>
+
+  <div class="apple_body">
+
+
+    <div class="common_primary_div add_xml_div ">
+
+      <div class="you_have_x_apple_records">
+        You have {{ apple_records }} records from apple health stored in WS.
+      </div>
+      <label>Apple Health Data</label>
+
+
+
+      <div class="form-group mb-3">
+        <div class="custom-file">
+          <!-- <input type="file" class="custom-file-intput" id="file_input" oninput="input_filename();"> -->
+          <input type="file" class="custom-file-intput" id="file_input" >
+        </div>
+
+      </div>
+      <div class="submit_element_right">
+        <button onclick="upload('{{ request.url }}')" id="upload_btn" class="btn btn-secondary btn_custom01">
+          Upload</button>
+      </div>
+
+      <!-- <form method="POST">
+        <input type="submit" name="test_submit" value="test_submit_btn">
+      </form> -->
+      
+
+
+    </div>
+
+    <div class="common_primary_div find_apple_export">
+      <h2>How do I find my Apple Health data on my iPhone?</h2>
+      <ol>
+        <li>Go to apple health</li>
+        <li>Click on top right icon</li>
+        <li>Bottom of screen has export apple health</li>
+      </ol>
+    </div>
+
+    {% if isinstance(apple_records, str) %}
+    <div class="common_primary_div delete_apple">
+      See what else is in my Apple Health Data
+      <div class="submit_element_right">
+        <a class="btn btn-light btn_custom01" href="{{ url_for('users.add_more_apple') }}">Go to Table</a>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="common_primary_div delete_apple">
+      Remove your Apple Health data from WS database
+      <div class="submit_element_right">
+        <button class="btn btn-danger btn_custom01" data-bs-toggle="modal"
+          data-bs-target="#areYouSureModal">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADD DATA Modal -->
+<div class="modal fade apple_add_data_modal" id="addDataModal" tabindex="-1" aria-labelledby="largeModal"
+  aria-hidden="true">
+  <div class="modal-dialog apple_add_modal_dialog" role="document">
+    <div class="modal-content apple_add_modal_content">
+      <div class="modal-header">
+
+        <h4 class="modal-title" id="myModalLabel">Loading Apple Data</h4>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Working ...
+        </button>
+        <button class="btn btn-secondary d-none" id="cancel_btn" type="button">Cancel Upload</button>
+        <div id="progress_wrapper" class="d-none">
+          <label id="progress_status">50% uploaded</label>
+          <div class="progress mb-3">
+            <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="25" area-valuemin="0"
+              area-valuemax="100"></div>
+          </div>
+        </div>
+        <p>These are compressed files and may longer to store after upload is complete.</p>
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- D?ELETE Modal  -->
+<div class="modal fade apple_delete_modal" id="areYouSureModal" tabindex="-1" aria-labelledby="areYouSureModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog apple_delete_modal_dialog" role="document">
+    <div class="modal-content apple_delete_modal_content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="modal-body apple_delete_modal_body">
+        <form method="POST">
+          <div class="yes_delete_apple">
+              <button type="submit" name="btn_delete_apple_data" value=True class="btn btn-danger btn_custom01">
+                Yes, delete <u><b>all</b></u> my Apple Health Data from What Sticks
+              </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Remove flash on click -->
+<script>
+  function removeFlash() {
+    const element = document.getElementById('div_flash');
+    element.remove();
+  }
+</script>
+
+
+<!-- Progress Bar -->
+<script>
+  var progress = document.getElementById("progress");
+  var progress_wrapper = document.getElementById("progress_wrapper");
+  var progress_status = document.getElementById("progress_status");
+
+  var upload_btn = document.getElementById("upload_btn");
+  var loading_btn = document.getElementById("loading_btn");
+  var cancel_btn = document.getElementById("cancel_btn");
+
+  var alert_wrapper = document.getElementById('alert_wrapper')
+
+  var input = document.getElementById('file_input')
+
+
+  function show_alert(message, alert) {
+
+    alert_wrapper.innerHTML = `
+      <div class = "flash_custom_parent" >
+        <div class="alert alert-${alert} alert_custom" id="div_flash">
+          <i class="close icon"></i>
+            <span>${message}</span>
+          <div class="close_right">
+            <input type="button" value=&#10006 onclick="removeFlash()" class="btn btn-secondary btn_custom02">
+          </div>
+        </div>
+      </div>
+      `;
+  };
+
+
+
+  function upload(url) {
+    // console.log('This is the url', url)
+    $('#addDataModal').modal('show');
+
+    if (!input.value) {
+      show_alert("No file selected", "warning");
+      return;
+    }
+
+    var data = new FormData();
+
+    var request = new XMLHttpRequest();
+
+    request.responseType = "json";
+
+    alert_wrapper.innerHTML = "";
+
+    input.disabled = true;
+
+    upload_btn.classList.add("d-none");
+    loading_btn.classList.remove("d-none");
+    cancel_btn.classList.remove("d-none");
+    progress_wrapper.classList.remove("d-none");
+
+    var file = input.files[0];
+
+
+    var filename = file.name;
+    console.log('This is the filename', file)
+
+    var filesize = file.size;
+    document.cookie = `filesize=${filesize}`
+
+    data.append("apple_health_data", file);
+
+
+    request.upload.addEventListener("progress", function (e) {
+
+      var loaded = e.loaded;
+      var total = e.total;
+
+      var percentage_complete = (loaded / total) * 100;
+
+      progress.setAttribute("style", `width: ${Math.floor(percentage_complete)}%`);
+      progress_status.innerText = `${Math.floor(percentage_complete)}% uploaded`
+    })
+
+    request.addEventListener("load", function (e) {
+      console.log("This is the request status: ")
+      console.log(request.status)
+      if (request.status == 200) {
+        console.log("This was a request thing")
+        show_alert("Processing Apple Health data.", "info");
+        // location.reload();
+        
+        // console.log({{ flash_flag}})
+      }
+      else {
+        // show_alert(`Error uplaoding file`, "warning");
+        show_alert(`WS is processing the file. You will be emailed when the processing is complete`,'info')
+        // console.log({{ flash_flag }})
+        console.log('We tried')
+        
+      }
+      reset();
+    })
+
+
+    request.addEventListener("error", function (e) {
+      reset();
+      show_alert("Error has occured", "warning");
+    })
+
+    request.open("post", url);
+    request.send(data);
+
+    cancel_btn.addEventListener("click", function () {
+      $('#addDataModal').modal('toggle');
+      request.abort();
+      location.reload();
+
+    })
+
+  } // end upload
+
+  function reset() {
+    input.value = null;
+    input.disabled = false;
+
+    cancel_btn.classList.add("d-none");
+    loading_btn.classList.add("d-none");
+    upload_btn.classList.remove("d-none");
+
+    progress_wrapper.classList.add("d-none");
+    progress.setAttribute("style", "width:0%")
+    $('#addDataModal').modal('toggle');
+  }
+
+</script>
+
+
+
+
+{% endblock %}

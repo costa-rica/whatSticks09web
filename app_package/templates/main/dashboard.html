@@ -1,0 +1,92 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+<section class="dashboard">
+    <div class = "title">
+        {{ page_name }}
+      </div>
+    <div class="table_and_chart">
+
+        <div class="table_div_outer">
+
+            <div class="table_flex">
+                <form method="POST">
+                <div class="table_div">
+                    <div class="header header_var">
+                        
+                    </div>
+                
+                    <div class="header header_corr">
+                        Correlation Percentage
+                    </div>
+                
+                    {% for key, _ in corr_dict.items() %}
+                    <div class="row_header">
+                        {% if buttons_dict[key]!=1 %}
+                        <button type="submit" name="{{ key }}" value="1" class="btn btn-primary btn_header">{{ corr_dict[key][1] }}</button>
+                        {% else %}
+                        <button type="submit" name="{{ key }}" value="1" class="btn btn-outline-primary btn_header">{{ corr_dict[key][1]  }}</button>
+                        {% endif %}
+                    </div>
+                    <div class="row_value">
+                        {% if buttons_dict[key]!=1 %}
+                        {{ corr_dict[key][0] }}
+                      {% else %}
+                        Off
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+
+
+
+
+
+                </div>
+            </form>
+            </div>
+
+
+        </div>
+    
+        <div class="bokeh_div">
+            {{ div_b|safe }}
+        </div>
+
+    </div>
+
+    <form method="POST">
+        <div class="table_and_chart">
+            {% if 'apple_health_' in dash_dependent_var %}
+                <div class="common_primary_div custom_apple">
+                    See what else is in my Apple Health Data
+                    <div class="submit_element_right">
+                    <a class="btn btn-light btn_custom01" href="{{ url_for('users.add_more_apple') }}">Go to Table</a>
+                    </div>
+                </div>
+            {% endif %}
+        
+            <div class="table_and_chart_submit_element_right">
+                <!-- <input type="submit" value="Refresh Data" name="refresh_data" class="btn btn-secondary btn_custom01">
+                 -->
+                 <!-- <a href="{{url_for('dash.refresh_data', USER_ID=current_user.id, dash_dependent_var=dash_dependent_var, dashboard_name_formatted=dashboard_name_formatted ) }} ">
+                    Refresh Data
+                  </a> -->
+            </div>
+        
+
+
+
+        </div>
+    </form>
+
+
+</section>
+{{ script_b|safe }}
+
+
+<script src="../static/bokeh/bokeh-2.4.3.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+
+<section class="admin_db">
+  <form method="POST" id="form1"></form>
+  <div class="title">
+    Admin Database Page
+  </div>
+
+
+  
+  <div class="admin_db_body">
+    <div class="title_sub">
+      <h3>Download</h3>
+    </div>
+    <br>
+    <div class="div_list_of_tables">
+      {% for table in list_of_tables %}
+      <br>
+      <button type="submit" class="btn btn-light" name="download_table" value="{{ table }}" form="form1">{{ table }}</button>
+      <!-- <button type="button" class="btn btn-light" name="download_table" value="{{ table }}" form="form1">{{ table }}</button> -->
+
+      <!-- <label class="switch">
+        <input type="checkbox" class="btn btn-light">
+        <span class="slider">{{ table }}</span>
+      </label> -->
+
+      
+      {% endfor %}
+      <!-- <br><br>
+      <button type="button" id="button" title="button" class="btn btn-success btn_custom" name="test_button" value="looking_good" form="form1">Press Me</button>
+      <button type="submit" class="btn btn-success" name="download" value="True" form="form1">Download</button>  -->
+    </div>
+
+
+
+  </div>
+
+  <hr>
+  <div class="admin_db_body">
+    <form method="POST" id="form2"></form>
+    <div class="title_sub">
+      <h3>Upload</h3>
+    </div>
+    <div class="div_list_of_tables">
+    <input type="file" name="csv_table_upload" accept=".csv" form="form2">
+    </div>
+
+
+  </div>
+</section>
+
+
+<script>
+//   function setButton (e) {
+//     this.style.borderStyle = (this.style.borderStyle!=='inset' ? 'inset' : 'outset'); 
+// }
+
+
+$(document).ready(function() {
+  $('a#button').click(function() {
+    $(this).toggleClass("down");
+  });
+});
+  </script>
+
+{% endblock %}
+      

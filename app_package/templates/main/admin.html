@@ -1,0 +1,128 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+
+<section class="admin">
+  
+  <div class="title">
+    Admin Page
+  </div>
+      {% for form_num in list_of_forms %}
+      <form method="POST" id="{{ form_num }}"></form>
+      {% endfor %}
+
+  
+    <div class="admin_body">
+      
+      <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Update</th>
+            <th>Email</th>
+            <th>Oura Token Status</th>
+            <th>Weather Hist Status</th>
+            <th>Weather Hist Date</th>
+            <th>Apple Health Rec Count</th>
+            <th>Oura Sleep Rec Count</th>
+            <th>Delete User</th>
+
+            
+
+          </tr>
+        </thead>
+        
+        <tbody>
+          
+
+          {% for user in users_list %}
+            <tr>
+              <!-- Not shown but necessary -->
+              <input class="no_input" type="text" name="user_id" value="{{ user[0].id }}" form="{{ user[1] }}" >
+              <td>{{ user[0].id }}</td>
+              <td><input type="submit" value="Update" class="btn btn-secondary btn_custom01" form="{{ user[1] }}"></td>
+              
+              <td>{{ user[0].email }}</td>
+              <td><input class="form-control textbox_admin_small" type="text" name="oura_token" value="{{ user[2] }}" form="{{ user[1] }}"></td>
+              <td><input class="form-control textbox_admin_small" type="text" name="weather_hist_status" value="{{ user[3] }}" form="{{ user[1] }}"></td>
+              <td><input class="form-control " type="date" name="weather_hist_date" value="{{ user[4] }}" form="{{ user[1] }}"></td>
+              <td>{{ user[5] }}</td>
+              <td>{{ user[6] }}</td>
+              
+              <td>
+                
+                <button type="button" class="dash_id_button" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-whatever="{{ user[0].id }}">
+                 Delete {{ user[0].id }}</button>
+                
+              </td>
+              <!-- <td>{{ user[1] }}</td> -->
+              
+            </tr>
+
+          {% endfor %}
+          
+
+
+          
+        </tbody>
+      
+      </table>
+
+
+      <div class="div_databases_btn">
+        <a href="{{ url_for('users.admin_db') }}" class="btn btn-success btn_custom">Go to databases </a>
+      </div>
+    </div>
+    
+  
+  
+      <!-- Modal Delete -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header modal_header_delete">
+              <h5 class="modal-title" id="deleteModalLabel">This doesn't show up when working correctly - add javascript to bottom</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modal_body_delete">
+              <button type="submit" class="btn btn-primary delete_button" id="yes_delete" name="delete_button" form="{{ list_of_forms[-1] }}">Yes, delete</button>
+              <input type="text" class="form-control hide_textbox" id="recipient-name" name="delete_user_id" form="{{ list_of_forms[-1] }}" readonly>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+
+    
+   
+
+</section>
+<script>
+  $(document).ready(function () {
+  $('#dtBasicExample').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});
+</script>
+
+<!--Delete modal read record id-->
+<script>
+  var deleteModal = document.getElementById('deleteModal')
+  deleteModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var recipient = button.getAttribute('data-bs-whatever')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    var modalTitle = deleteModal.querySelector('.modal-title')
+    var modalBodyInput = deleteModal.querySelector('.modal-body input')
+  
+    modalTitle.textContent = 'Delete record ' + recipient +'?'
+    modalBodyInput.value = recipient
+  
+  });
+  </script>
+
+{% endblock %}

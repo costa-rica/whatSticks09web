@@ -1,0 +1,145 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+<!-- <div id="alert_wrapper"></div> -->
+<section class="oura">
+  
+  <div class="title">
+    Oura Ring
+  </div>
+  <form method="POST">
+  <div class="oura_body">
+    
+
+
+
+    <div class="common_primary_div add_token_div">
+      <!-- <button type="button" class="btn_to_label" data-bs-toggle="modal" 
+      data-bs-target="#activityModal"><u>Oura Ring Token: </u>
+      </button> -->
+      <div class="add_oura_heading">
+        You have {{ oura_sleep_records }} records from Oura Ring stored in WS.
+      </div>
+      <br>
+      <label>Oura Ring Personal Token:</label>
+      <div>
+        {% if oura_token != "" %}
+        <input type="text" id="oura_token_textbox" name="oura_token_textbox" class="register_text add_oura_input_text disabled_input"
+        value="{{ oura_token }}" readonly>
+        {% else %}
+        <input type="text" id="oura_token_textbox" name="oura_token_textbox" class="register_text add_oura_input_text">
+        {% endif %}
+      </div>
+
+      <div class="submit_element_right">
+        <input type="checkbox" id="edit_token_checkbox" name="edit_token_checkbox" onchange="editable()">
+        <label for="edit_token_checkbox">Edit Token</label>
+      </div>
+
+
+          
+            <div class="submit_element_right">
+              <button type="submit" name="btn_link_oura" value="True" class="btn btn-secondary btn_custom01">
+                Link Data</button>
+            </div>
+          
+
+    </div>
+
+    <br>
+
+    <div class="common_primary_div add_instructions">
+      In order to connect your Oura Ring data to WS you will need to first get your Oura Ring Personal Token. To do this follow these steps:
+      <br><br>
+      <ol>
+        <li>Create an Oura account using the Oura iOS or Android application. Use the same account to sign-in to <a href="https://cloud.ouraring.com">https://cloud.ouraring.com</a>. </li>
+        <li>Next enter a reason and copy the token <a href="https://cloud.ouraring.com/personal-access-token ">https://cloud.ouraring.com/personal-access-token </a></li>
+      </ol>
+    </div>
+
+    <br>
+    {% if current_user.id == 1 %}
+    <div class="common_primary_div delete_instructions">
+      Call API one more time
+      <div class="submit_element_right">
+        
+          <button type="submit" class="btn btn-light btn_custom01" name="recall_api" value="True">Submit</button>
+       
+        
+      </div>
+    </div>
+    {% endif %}
+    
+    </div>
+  </form>
+  <div class="oura_body">
+
+    <div class="common_primary_div delete_instructions">
+      Remove your Oura Ring from WS database
+      <div class="submit_element_right">
+        <button class="btn btn-danger btn_custom01" data-bs-toggle="modal"
+          data-bs-target="#areYouSureModal">Delete</button>
+      </div>
+    </div>
+
+
+  </div>
+<br><br>
+
+  </section>
+
+<!-- D?ELETE Modal  -->
+<div class="modal fade data_delete_modal" id="areYouSureModal" tabindex="-1" aria-labelledby="areYouSureModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog data_delete_modal_dialog" role="document">
+    <div class="modal-content data_delete_modal_content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="modal-body apple_delete_modal_body">
+        <form method="POST">
+          <div class="yes_delete_data">
+              <button type="submit" name="btn_delete_data" value=True class="btn btn-danger btn_custom01">
+                Yes, delete <u><b>all</b></u> my Oura Ring records from What Sticks
+              </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Remove flash on click -->
+<script>
+  function removeFlash() {
+    const element = document.getElementById('div_flash');
+    element.remove();
+  }
+</script>
+
+<script>
+  function editable() {
+    var oura_token_textbox = document.getElementById("oura_token_textbox");
+    var edit_token_checkbox = document.getElementById("edit_token_checkbox")
+    if (edit_token_checkbox.checked) {
+      oura_token_textbox.removeAttribute('readonly');
+      document.getElementById('oura_token_textbox').style.backgroundColor = "white";
+
+    } else {
+      oura_token_textbox.setAttribute('readonly', true);
+      document.getElementById('oura_token_textbox').style.backgroundColor = "gray";
+
+    }
+  }
+  </script>
+
+
+
+
+{% endblock %}

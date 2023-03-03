@@ -1,0 +1,201 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+
+
+
+<section class="apple_closer_look">
+
+  <div class="title">
+    Apple Health Data: {{ data_item_name_show }}
+  </div>
+  <div class="flex_to_right">
+    <a href="{{ url_for('users.add_more_apple') }}">Back to List</a>
+  </div>
+  
+  
+  <form method="POST" id="form_1"></form>
+  <form method="POST" id="form_check_all"></form>
+  
+
+  <div class="apple_closer_look_body">
+
+    <div class="common_primary_div more_apple_description">
+      The table below shows all the entries for this 'TYPE'.
+    </div>
+
+    <div class="common_primary_div use_data_div_sub">
+      <h3>How do you want to use this data:</h3>
+      <div class="use_data_div">
+
+        
+          Select method of aggregation (only one):<br>
+          <div class="use_data_div_child">
+          <div class="white_oval" >
+            <input type="radio" id="sum" name="agg_method" value="true" form="form_1"checked><label for="sum">Sum</label>
+            <br>
+            <input type="radio" id="average" name="agg_method" value="true" form="form_1"checked><label for="avearage">Average</label>
+          </div>
+  
+          <button type="button" class="look_like_a" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" 
+          data-bs-content="This is needed because some data should be added while others should be averaged. Take heart rates. We don't want to add all the heart rates measured in one day."
+           data-bs-original-title="How should we handle multiple entries in one day?">Why?</button>
+        </div>
+
+
+
+        Select SourceName:
+        <div class="white_oval ">
+          {% for source in source_name_list %}
+          <input type="checkbox" name="source_name_{{ source }}" value="true" form="form_1"><label>{{ source }}</label>
+          <br>
+          {% endfor %}
+        </div>
+
+
+        Select SourceVersion:
+        <div class="div_check_all">
+
+          <div class="flex_to_right">
+            {% if check_all == 'True' %}
+            <button type="submit" class="look_like_a" form="form_check_all" name="btn_check_all" value="false">Uncheck All</button>
+            
+            
+            {% else %}
+            <button type="submit" class="look_like_a" form="form_check_all" name="btn_check_all" value="true">Check All</button>
+            {% endif %}
+          </div>
+
+          <div class=" grid-wrapper">
+          
+            
+              {% for source in source_version_list %}
+              <div class="grid-item">
+                {% if check_all == 'True' %}
+                <input  id="source_{{ source }}" type="checkbox" 
+                name="source_version_{{ source }}" value="true" form="form_1" checked><label for="source_{{ source }}">{{ source }}</label>
+
+                {% else %}
+                <input  id="source_{{ source }}" type="checkbox" 
+                name="source_version_{{ source }}" value="true" form="form_1"><label for="source_{{ source }}">{{ source }}</label>
+                {% endif %}
+              </div>
+              {% endfor %}
+            
+
+            
+    
+          </div>
+
+        </div>
+
+
+        Select Unit:
+        <div class="white_oval">
+          {% for unit in unit_list %}
+          <input type="checkbox" name="unit_name_{{ unit }}" value="true" form="form_1"><label >{{ unit }}</label>
+          <br>
+          {% endfor %}
+        </div>
+
+
+
+
+
+        <div class="flex_to_right">
+          <button form="form_1" type="submit" name="btn_add_data" value="true" class="btn btn-light">Add Data</button>
+          <!-- <input id='submit' type="submit" value="Submit"form="form_1"> -->
+        </div>
+
+      </div>
+
+
+    </div>
+    <div class="abbrev_df_message_div">
+      {% if abbrev_df_message != '' %}
+      <div class="msg_count">{{ abbrev_df_message }}</div>
+      
+      <br>
+      <div>
+        To see all rows <a href="">download csv</a>.
+      </div>
+    {% endif %}
+
+    </div>
+
+    
+    <div class="table_background_sub">
+      <div class="table_background">
+        <table id="table_id" class="display table responsive" >
+          <thead>
+            <tr>
+              {% for col in col_names[:10] %}
+              <th>{{ col }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+              {% for row in df_records_list %}
+              <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.user_id }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.sourceName }}</td>
+                <td>{{ row.sourceVersion }}</td>
+                <td>{{ row.unit }}</td>
+                <td>{{ row.creationDate }}</td>
+                <td>{{ row.startDate }}</td>
+                <td>{{ row.endDate }}</td>
+                <td>{{ row.value }}</td>
+              </tr>
+              {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+
+
+  </div>
+
+</section>
+  
+<script type="text/javascript">
+  $('#table_id').DataTable();
+</script>
+
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+  // $('div.checkbox-group.required :checkbox:checked').length > 0
+
+
+
+
+
+</script>
+<!-- <script>
+    var verifyPaymentType = function () {
+    // alert('vefiryPayment fired!')
+    var checkboxes = $('.wish_payment_type .checkbox');
+    // alert(checkboxes)
+    var inputs = checkboxes.find('input');
+    var first = inputs.first()[0];
+
+    inputs.on('change', function () {
+      this.setCustomValidity('');
+    });
+
+    first.setCustomValidity(checkboxes.find('input:checked').length === 0 ? 'Choose one' : '');
+  }
+
+  $('#submit').click(verifyPaymentType);
+</script> -->
+
+{% endblock %}

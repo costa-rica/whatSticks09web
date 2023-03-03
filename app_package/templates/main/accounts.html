@@ -1,0 +1,158 @@
+{% extends "_layout.html" %}
+{% block main %}
+
+<section class="account">
+
+    <div class="account_body">
+        <div class="title">
+            Account page
+        </div>
+
+        <form method="POST" action="" >
+            <div class="account_grid">
+            
+                
+                <div class="label"><label>Email:</label></div>
+                <input type="text" name="email" class="register_text" value="{{ email }}">
+<!-- 
+
+                <button type="button" class="btn_to_label" data-bs-toggle="modal" 
+                    data-bs-target="#activityModal"><u>Oura Ring Token: </u>
+                </button>
+                <input type="text" id="oura_token" name="oura_token" class="register_text"
+                    value="{{ oura_token }}"> -->
+                
+                
+                <label for="location_text">Location:</label>
+                <div class="location_input_and_check">
+
+                    <input type="text" id="location_text" name="location_text" class="register_text"
+                    placeholder="Latitude, Longitude" value = "{{ location_coords }}">
+                    
+                    <input type="text" id="city_name_textbox" name="city_name_textbox" class="register_text disabled_input"
+                    value="{{ city_name }}" readonly>
+
+                    {% if city_name != "2" %}
+                    <small class="small_font">*If you wish to remove your location from WS, delete the coordinates and update.</small>
+                    {% endif %}
+
+                    <div class="element_right">
+                        <input class="btn btn-secondary btn_loc" type="button" value=""
+                            onclick="getLocation()">
+                        <label class="form-check-label password_checkbox">
+                            Get Location
+                        </label>
+                    </div>
+
+
+                </div>
+
+                <br>
+
+                <div class="submit_element_right">
+                    <input type="submit" value="Update" class="btn btn-secondary btn_custom01">
+                </div>
+             
+                
+
+            
+
+            </div>
+        </form>
+        
+        <br>
+        <h2>Manage Your Data </h2>
+
+        <br>
+        <a href="{{ url_for('users.add_apple') }}" class="a_href_no_decor">
+            <div class="common_primary_div div_a_href">
+                <div>
+                    Add/remove your Apple Health Data
+                </div>
+
+            </div>
+
+        </a>
+
+
+       <br>
+
+        <a href="{{ url_for('users.add_oura') }}" class="a_href_no_decor">
+        
+        <div class="common_primary_div div_a_href">
+            <div>
+                Add/remove your Oura Ring
+            </div>
+
+        </div>
+
+        </a>
+
+        <br>
+
+        {% if location_coords %}
+        <a href="{{ url_for('users.add_more_weather') }}" class="a_href_no_decor">
+        
+            <div class="common_primary_div div_a_href">
+                <div>
+                    Add more historical weather data
+                </div>
+    
+            </div>
+    
+        </a>
+        {% endif %}
+
+
+
+    </div>
+
+</section>
+
+
+
+<div class="modal fade accounts_modal" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Get your Oura Ring token</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <ol>
+                <li>Create an Oura account using the Oura iOS or Android application. Use the same account to sign-in to <a href="https://cloud.ouraring.com">https://cloud.ouraring.com</a>. </li>
+                <li>Next enter a reason and copy the token <a href="https://cloud.ouraring.com/personal-access-token ">https://cloud.ouraring.com/personal-access-token </a></li>
+            </ol>
+
+            
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  
+
+<!-- Get location -->
+<script>
+    var x = document.getElementById("location_text");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        x.value = Math.round(position.coords.latitude *100 )/100 + ", " + Math.round(position.coords.longitude *100 )/100;
+    }
+</script>
+<!-- location source: https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation -->
+
+
+
+{% endblock %}

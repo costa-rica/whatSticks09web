@@ -50,7 +50,7 @@ logger_init.addHandler(stream_handler)
 logging.getLogger('werkzeug').setLevel(logging.DEBUG)
 logging.getLogger('werkzeug').addHandler(file_handler)
 
-logger_init.info(f'--- Starting API Endpoint Tester ---')
+logger_init.info(f'--- Starting What Sticks Web 09 ---')
 
 mail = Mail()
 

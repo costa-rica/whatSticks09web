@@ -70,12 +70,13 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
+    logger_main.info(f"- In home page -")
     if current_user.is_authenticated:
         return redirect(url_for('dash.dashboard', dash_dependent_var='steps'))
 
     latest_post = sess.query(communityposts).all()
-    print("--- latest communith posts ---")
-    print(latest_post)
+
+    
     # latest_post = ""
     if len(latest_post) > 0:
         latest_post = latest_post[-1]
@@ -93,7 +94,6 @@ def home():
 
 @main.route('/login', methods = ['GET', 'POST'])
 def login():
-    print('* in login *')
     if current_user.is_authenticated:
         return redirect(url_for('dash.dashboard', dash_dependent_var='steps'))
     page_name = 'Login'
@@ -118,13 +118,13 @@ def login():
             else:
                 flash('Must enter password', 'warning')
         elif formDict.get('btn_login_as_guest'):
+            # TODO: Need a better way to find guest account
             user = sess.query(Users).filter_by(id=2).first()
             login_user(user)
 
             return redirect(url_for('dash.dashboard', dash_dependent_var='steps'))
         else:
             flash('No user by that name', 'warning')
-
 
     return render_template('main/login.html', page_name = page_name)
 
@@ -334,6 +334,7 @@ def account():
 
 
 @main.route('/add_apple', methods=["GET", "POST"])
+@login_required
 def add_apple():
 
     USER_ID = current_user.id if current_user.id !=2 else 1

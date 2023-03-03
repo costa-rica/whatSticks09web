@@ -1,0 +1,39 @@
+{% extends "_layout.html" %}
+{% block main %}
+<section class="dashboard">
+
+  <div class = "dashboard_body">
+    <div class = "title">
+      {{ page_name }}
+    </div>
+
+    <div class="dashboard_form">
+      <form method="POST" action="">
+
+        <div class="correlation_div">
+          {{ message }}
+        </div>
+
+        <div class="submit_element_right">
+          <!-- <input type="submit" value="Refresh Data" name="refresh_data" class="btn btn-secondary btn_custom01"> -->
+          <!-- <a href="{{url_for('dash.refresh_data', USER_ID=current_user.id, dash_dependent_var=dash_dependent_var, dashboard_name_formatted=dashboard_name_formatted ) }} ">
+            Refresh Data
+          </a> -->
+      </div>
+
+      </form>
+
+    </div>
+    
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
+{% endblock %}
