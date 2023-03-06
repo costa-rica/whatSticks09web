@@ -1,5 +1,6 @@
 from flask import Flask
 from app_package.config import ConfigLocal, ConfigDev, ConfigProd
+# from ws09_config import ConfigLocal, ConfigDev, ConfigProd
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -21,8 +22,8 @@ elif os.environ.get('CONFIG_TYPE')=='prod':
     print('- Personalwebsite/__init__: Configured for Production')
 
 
-if not os.path.exists(os.path.join(os.environ.get('PROJ_ROOT_PATH'),'logs')):
-    os.makedirs(os.path.join(os.environ.get('PROJ_ROOT_PATH'), 'logs'))
+if not os.path.exists(os.path.join(os.environ.get('WS_ROOT_WEB'),'logs')):
+    os.makedirs(os.path.join(os.environ.get('WS_ROOT_WEB'), 'logs'))
 
 # timezone 
 def timetz(*args):
@@ -36,7 +37,7 @@ formatter_terminal = logging.Formatter('%(asctime)s:%(filename)s:%(name)s:%(mess
 logger_init = logging.getLogger('__init__')
 logger_init.setLevel(logging.DEBUG)
 
-file_handler = RotatingFileHandler(os.path.join(os.environ.get('PROJ_ROOT_PATH'),'logs','__init__.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(os.environ.get('WS_ROOT_WEB'),'logs','__init__.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
 file_handler.setFormatter(formatter)
 
 stream_handler = logging.StreamHandler()

@@ -1,0 +1,145 @@
+{% extends "_layout.html" %}
+{% block title %} Post to Blog {% endblock %}
+{% block main %}
+
+<section class="blog_edit">
+
+  <h1>Edit Blog ID: {{ post_id }}</h1>
+  <p>
+    Add word documents with the formatting below.
+  </p>
+
+  <form method=POST enctype=multipart/form-data>
+    
+    
+    <div class="blog_form_div">
+        <div class="blog_form_sub_top">
+
+          Title:
+          <input type="text" class="form-control input_custom" name="blog_title" value="{{ post.title }}" >
+          <br>
+          Published Date:
+          <input type="date" class="form-control input_custom" name="blog_pub_date" value="{{ published_date }}">
+
+          <br>
+          Description:
+          <textarea  class="form-control textarea_custom" name="blog_description">{{ post.description }}</textarea>
+        </div>
+
+
+
+        <div class="table_background_sub">
+          <div class="table_background">
+            <table id="table_id" class="display table responsive table_custom_fit">
+            <!-- <table id="proxies" class="table table-striped table-bordered" style="width:100%"></table> -->
+            <!-- <table id="example" class="table table-striped" style="width:100%"> -->
+              <thead>
+                <tr >
+
+                <th class="word_row_column">{{ column_names.0 }}</th>
+                <th class="row_tag_column">{{ column_names.1 }}</th>
+                <th class="row_html_column">{{ column_names.2 }}</th>
+                <th class="row_html_column">{{ column_names.3 }}</th>
+                
+
+    
+                </tr>
+              </thead>
+              <tbody>
+              {% for row, merge_id in postHtml_list %}
+                <tr>
+                  <td class="word_row_column">
+                    
+                    <input type="submit" class="id_button_delete" name="delete_word_row" value="{{ row.word_row_id }}" >
+                  </td>
+    
+                    <td class="row_tag_column">
+                      <input type="text"  name="row_tag:{{ row.post_id }}_{{ row.word_row_id }}" 
+                        class="form-control form_custom" value="{{ row.row_tag }}" list="row_format_options">
+                        <datalist id="row_format_options">
+                          {% for i in row_format_options %}
+                            <option>{{ i }}</option>
+                          {% endfor %}
+                        </datalist>
+                    </td>
+                    <td class="row_html_column">
+                      <input type="text"  name="row_html:{{ row.post_id }}_{{ row.word_row_id }}" 
+                        class="form-control form_custom" value="{{ row.row_going_into_html }}" >
+                    </td>
+                    <td>
+                      {% if row.word_row_id==2 %}
+                      <input type="submit" class="id_button_hide" name="_merge {{ row.word_row_id }}" value="Merge to {{ merge_id }} " disabled>
+                      {% else %}
+                      <input type="submit" class="id_button_merge" name="_merge {{ row.word_row_id }}" value="Merge to {{ merge_id }} ">
+                      {% endif %}
+                    </td>
+                    
+                  <!-- <td>
+                    <input type="submit" class="dash_id_button" value="Edit Post {{ row[0] }}" name="edit_post_button">
+                  </td> -->
+                </tr>
+              {% endfor %}
+    
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class = "merge_cons_lines">
+          <div class = "merge_cons_lines_sub">
+            <h2>Merge multiple consecutive rows</h2>
+            <label>Start:</label>
+            <input type="text" class = "line_number" name="start_cons_line">
+            <label>End:</label>
+            <input type="text" class = "line_number" name="end_cons_line">
+            <br>
+            *must have both beginning and end AND must be consecutive.
+          </div>
+        </div>
+
+
+
+        <div class="blog_form_buttons">
+          <div class="button_div_right">
+          <input onclick="update()" type="submit" class="btn btn-primary btn_custom" value="Update" name="update_lines">
+          </div>
+          
+          <br/><br/>
+      
+          Upload Progress Bar
+          <div class="progress" id="Progress_Status">
+            <div class="progress-bar progress-bar-striped" id="myprogressBar" role="progressbar"></div>
+          </div>
+        </div>
+
+    
+  </div>
+  
+
+  
+  </form>
+  
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $('#table_id').DataTable();
+    } );
+  </script>
+  
+  <script>
+    function update() {
+      var element = document.getElementById("myprogressBar");   
+      var width = 10;
+      var identity = setInterval(scene, 10);
+      function scene() {
+      if (width >= 100) {
+          clearInterval(identity);
+      } else {
+          width++; 
+          element.style.width = width + '%'; 
+          }
+      }
+    }
+  </script>
+  </section>
+  {% endblock %}

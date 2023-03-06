@@ -1,0 +1,48 @@
+{% extends "_layout.html" %}
+
+{% block title %}Blog{% endblock %}
+
+{% block main %}
+
+<section class="blog_index">
+    <div class="blog_index_content">
+
+
+        <h1>Articles</h1>
+        <!-- form method=POST -->
+    
+            <ul class="data_tools_list">
+                {% for _, blog in blog_dicts_for_index.items() %}
+                    
+                <li>
+                    <a href="{{ url_for('blog.blog_template', blog_name=blog['blog_name']) }}">
+                        <div class="data_tool_div">
+    
+                                <div class="title_div">
+    
+                                    <h2>{{ blog['title'] }}</h2>
+    
+                                </div>
+    
+                                <div class="date_div">
+                                    {{ blog['date_published'] }}
+                                </div>
+    
+                                <div class="data_tools_description">
+                                    {{ blog['description'] }}
+                                    
+                                </div>
+                            
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+    
+        <!-- form -->
+
+    </div>
+
+
+</section>
+{% endblock %}

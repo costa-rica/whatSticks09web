@@ -1,0 +1,110 @@
+{% extends "_layout.html" %}
+{% block title %} Post to Blog {% endblock %}
+{% block main %}
+<form method="POST" id="form01" enctype=multipart/form-data></form>
+
+<section class="blog_post">
+
+  <h2>Add Blog Post</h2>
+  <p>
+    Add word documents with the formatting below.
+  </p>
+
+    
+<div class="blog_form_div">
+  <div class="blog_form_sub_top">
+
+
+
+    
+    <div class="blog_form_label_div">
+
+
+    <div class="blog_form_label_div">
+      <!-- form.blog_description.label -->
+      <label for="blog_description">Description</label>
+    </div>
+    <div class="blog_form_input_div">
+      <textarea class="textarea_custom" name="blog_description" id="blog_description" 
+        placeholder="optional (takes word doc 2nd/3rd paragraph)" form="form01"></textarea>
+    </div>
+
+
+    <div class="blog_form_label_div">
+       <!-- form.date_published.label -->
+       Date
+    </div>
+    <div class="blog_form_input_div">
+      <!-- form.date_published(class="input_custom" -->
+      <input type="date" id="birthday" name="date_published" class="form-control" form="form01">
+    </div>
+
+    Upload MS Word document saved as html:
+    <div class="blog_form_input_div">
+
+      <input class="form-control" type="file" form="form01" name="post_html_file" 
+      accept=".html"
+      placeholder=".html">
+
+    </div>
+
+  
+    Upload .zip file of images that belong to html file above:
+    <div class="blog_form_input_div">
+      <input class="form-control" type="file" form="form01" name="post_images_zip" 
+      accept=".zip"
+      placeholder="if any images from a .zip">
+    </div>
+
+
+  </div>
+
+
+
+<div class="blog_form_buttons">
+  <!-- <input type=file id="word_doc_id" name=word_doc_name accept=".docx, doc" class="form-control file_custom"> -->
+  <!-- <div class="blog_form_input_div"> -->
+
+
+  <div class="button_div_right">
+    <input onclick="update()" type="submit" value="Upload" class="btn btn-primary btn_custom" form="form01">
+  </div>
+  
+  <br/><br/>
+
+  Upload Progress Bar
+  <div class="progress" id="Progress_Status">
+    <div class="progress-bar progress-bar-striped" id="myprogressBar" role="progressbar"></div>
+  </div>
+</div>
+</div>
+
+  <!-- </form> -->
+
+
+
+  <!-- <div class ="crosswalk">
+    Here is a crosswalk between the word document formatting and how it shows up in the blog page:
+    <img src="{{ url_for('static', filename='images/wordToBlogCrosswalk.png') }}" alt="crosswalk">
+  </div> -->
+
+
+
+<script>
+
+function update() {
+  var element = document.getElementById("myprogressBar");   
+  var width = 10;
+  var identity = setInterval(scene, 10);
+  function scene() {
+  if (width >= 100) {
+      clearInterval(identity);
+  } else {
+      width++; 
+      element.style.width = width + '%'; 
+      }
+  }
+}
+</script>
+</section>
+{% endblock %}

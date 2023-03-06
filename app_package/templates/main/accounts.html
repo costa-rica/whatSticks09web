@@ -64,7 +64,7 @@
         <h2>Manage Your Data </h2>
 
         <br>
-        <a href="{{ url_for('users.add_apple') }}" class="a_href_no_decor">
+        <a href="{{ url_for('main.add_apple') }}" class="a_href_no_decor">
             <div class="common_primary_div div_a_href">
                 <div>
                     Add/remove your Apple Health Data
@@ -77,7 +77,7 @@
 
        <br>
 
-        <a href="{{ url_for('users.add_oura') }}" class="a_href_no_decor">
+        <a href="{{ url_for('main.add_oura') }}" class="a_href_no_decor">
         
         <div class="common_primary_div div_a_href">
             <div>
@@ -91,7 +91,7 @@
         <br>
 
         {% if location_coords %}
-        <a href="{{ url_for('users.add_more_weather') }}" class="a_href_no_decor">
+        <a href="{{ url_for('main.add_more_weather') }}" class="a_href_no_decor">
         
             <div class="common_primary_div div_a_href">
                 <div>

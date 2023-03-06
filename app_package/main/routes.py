@@ -329,7 +329,7 @@ def account():
 
 
     print('existing_coordinates: ', existing_coordinates)
-    return render_template('accounts.html', page_name = page_name, email=email,
+    return render_template('main/accounts.html', page_name = page_name, email=email,
         location_coords = existing_coordinates, city_name = city_name)
 
 

@@ -1,0 +1,124 @@
+{% extends "_layout.html" %}
+{% block title %} User Blog Home {% endblock %}
+{% block main %}
+
+<section class="blog_home">
+
+
+    <h2>Your Community Blog Posts</h2>
+
+<div class = "top_custom_div">
+
+  <p class="p_div_custom">
+    
+  </p>
+  <div class="post_btn_div">
+    <a class="btn btn-info extra_padding" href="{{ url_for('blog.blog_post') }}">Post</a>
+
+  </div>
+</div>
+
+  <form method=POST enctype=multipart/form-data>
+
+    <div class="table_background_sub">
+      <div class="table_background">
+        <table id="table_id" class="display table responsive ">
+          <thead>
+            <tr>
+            {% for i in column_names %}
+            <th >{{ i }}</th>
+            {% endfor %}
+
+            </tr>
+          </thead>
+          <tbody>
+          {% for row in posts_details_list %}
+            <tr>
+              <td >
+                <!-- <div class="table_col_id"> -->
+                  {{ row[0] }}
+                <!-- </div> -->
+                
+              </td>
+
+              
+                <td >
+                  <div class="td_characteristics">
+                {{ row[1] }}
+                </div>
+              </td>
+              
+              <td >
+
+                <button type="button" class="dash_id_button form-control"
+                data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="{{ row[0] }}">Delete Post {{ row[0] }}</button>
+              </td>
+
+              {% for i in range(2,len(row)) %}
+                <td ><div class="td_characteristics">
+                  {{ row[i] }}
+                </div></td>
+              {% endfor %}
+
+            </tr>
+          {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+      <!-- Modal Delete -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header modal_header_delete">
+        <h5 class="modal-title" id="deleteModalLabel">This doesn't show up when working correctly - add javascript to bottom</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body modal_body_delete">
+        <button type="submit" class="btn btn-primary delete_button" id="yes_delete" name="delete_button">Yes, delete</button>
+        <input type="text" class="form-control hide_textbox" id="recipient-name" name="delete_record_id" readonly>
+      </div>
+
+      </div>
+      </div>
+    </div>
+    </div>
+
+  </form>
+
+
+  </section>
+
+  <script type="text/javascript">
+
+  $(document).ready(function() {
+    $('#table_id').DataTable();
+  } );
+  </script>
+
+<!--Delete modal read record id-->
+  <script>
+  var deleteModal = document.getElementById('deleteModal')
+  deleteModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var recipient = button.getAttribute('data-bs-whatever')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    var modalTitle = deleteModal.querySelector('.modal-title')
+    var modalBodyInput = deleteModal.querySelector('.modal-body input')
+  
+    modalTitle.textContent = 'Delete record ' + recipient +'?'
+    modalBodyInput.value = recipient
+  
+  });
+  </script>
+
+
+{% endblock %}
