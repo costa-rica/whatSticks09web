@@ -31,7 +31,7 @@ logger_dash.setLevel(logging.DEBUG)
 # logger_terminal.setLevel(logging.DEBUG)
 
 #where do we store logging information
-file_handler = RotatingFileHandler(os.path.join(os.environ.get('WS_ROOT_WEB'),"logs",'dashboard_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(os.environ.get('WEB_ROOT'),"logs",'dashboard_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
 file_handler.setFormatter(formatter)
 
 #where the stream_handler will print
@@ -57,7 +57,7 @@ def dashboard(dash_dependent_var):
         dash_dependent_var = 'oura_sleep_tonight'
     elif dash_dependent_var == 'steps':
         dash_dependent_var = 'apple_health_step_count'
-    USER_ID = current_user.id if current_user.id !=2 else 1
+    # USER_ID = current_user.id if current_user.id !=2 else 1
 
 
     data_item_list = user_data_item_list_util(USER_ID)

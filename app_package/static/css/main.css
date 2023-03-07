@@ -11153,6 +11153,387 @@ section.navbar_section .navbar_custom nav .dropdown:hover {
     font-size: 2rem;
   }
 }
+/*Blog Index*/
+section.blog_index {
+  padding: var(--nav-height) 0 0 0;
+}
+section.blog_index .blog_index_content {
+  padding: 2rem 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+section.blog_index .blog_index_content h1 {
+  margin-bottom: 1rem;
+  width: 97%;
+}
+section.blog_index .blog_index_content .data_tools_list {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+section.blog_index .blog_index_content ul {
+  list-style-type: none;
+  padding-left: 0;
+  width: 100%;
+}
+section.blog_index .blog_index_content ul a {
+  text-decoration: none;
+}
+section.blog_index .blog_index_content li {
+  margin: 0 0 3rem 0;
+  border-radius: 2rem;
+  padding: 0rem 2rem 2rem 2rem;
+  width: 100%;
+}
+section.blog_index .blog_index_content li .data_tool_div {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: "date" "title" "description";
+}
+section.blog_index .blog_index_content li .title_div {
+  grid-area: title;
+  display: flex;
+  width: 100%;
+  padding-bottom: 1rem;
+}
+section.blog_index .blog_index_content li .title_div h2 {
+  margin: 0;
+}
+section.blog_index .blog_index_content li .date_div {
+  grid-area: date;
+  margin: 0.5rem 0 0 0.5rem;
+  display: flex;
+  justify-content: end;
+}
+section.blog_index .blog_index_content li .data_tools_description {
+  grid-area: description;
+  width: 100%;
+}
+section.blog_index .blog_index_content li:nth-child(odd) {
+  background-color: var(--bs-secondary);
+}
+section.blog_index .blog_index_content li:nth-child(odd) h2 {
+  color: var(--bs-gray-700);
+}
+section.blog_index .blog_index_content li:nth-child(odd) a {
+  color: var(--bs-gray-700);
+}
+section.blog_index .blog_index_content li:nth-child(even) {
+  background-color: var(--bs-primary);
+}
+section.blog_index .blog_index_content li:nth-child(even) h2 {
+  color: var(--bs-gray-100);
+}
+section.blog_index .blog_index_content li:nth-child(even) a {
+  color: var(--bs-gray-100);
+}
+
+/*Blog Template*/
+section.blog {
+  padding: var(--nav-height) 0 3rem 0;
+  color: var(--bs-dark);
+}
+section.blog .date_div {
+  padding-top: 1rem;
+  display: flex;
+  flex: end;
+  font-size: 1.3rem;
+}
+section.blog .blog_sub {
+  padding-top: 3rem;
+}
+section.blog ul {
+  padding: 0 60px 0 40px;
+  margin: 0;
+}
+section.blog .standard_paragraph {
+  padding: 0 60px 0 20px;
+}
+section.blog .image_custom {
+  padding: 0 0 0 5px;
+}
+section.blog .image_custom img {
+  max-width: 90%;
+  height: auto;
+}
+section.blog .caption_custom_div {
+  padding: 10px 60px 0 65px;
+}
+section.blog .caption_custom {
+  font-size: 1.2rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+section.blog .indent_paragraph {
+  padding: 0 20px 0 60px;
+}
+section.blog .indent_code {
+  margin: 0;
+  padding: 0 120px 10px 60px;
+}
+section.blog .indent_code_background {
+  background-color: var(--bs-primary);
+  padding: 0 10px 5px 10px;
+  margin: 0 0 0 0;
+  line-height: 0.75em;
+}
+section.blog .code_font_color {
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+section.blog .date_div {
+  float: inline-end;
+  padding-right: 20%;
+}
+
+/*Blog Post*/
+section.blog_post {
+  padding: var(--nav-height) 0 60px 30px;
+}
+section.blog_post .blog_form_div {
+  border: 1px solid;
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+  background-color: var(--bs-gray-500);
+  margin: 2% 5% 2% 0;
+}
+section.blog_post .blog_form_div .blog_form_sub_top {
+  padding: 0 0 50px 20px;
+}
+section.blog_post .blog_form_div .blog_form_sub_top .input_custom {
+  width: 70%;
+}
+section.blog_post .blog_form_div .blog_form_sub_top .textarea_custom {
+  width: 100%;
+}
+section.blog_post .blog_form_div .blog_form_sub_top .blog_form_input_div {
+  min-width: 150px;
+  max-width: 80%;
+}
+section.blog_post .blog_form_div #Progress_Status {
+  width: 50%;
+  background-color: #ddd;
+  margin-left: 30px;
+}
+section.blog_post .blog_form_div #myprogressBar {
+  /* Starting point of progress bar */
+  width: 0;
+  height: 20px;
+  background-color: #4CAF50;
+}
+section.blog_post .blog_form_div .blog_form_buttons {
+  padding: 0 0 50px 20px;
+}
+section.blog_post .blog_form_div .blog_form_buttons .button_custom {
+  background-color: var(--bs-cyan);
+}
+section.blog_post .blog_form_div .blog_form_buttons .file_custom {
+  min-width: 150px;
+  width: 56%;
+}
+section.blog_post .blog_form_div .blog_form_buttons .button_div_right {
+  width: 60%;
+}
+section.blog_post .blog_form_div .blog_form_buttons .button_div_right .btn_custom {
+  float: right;
+}
+
+/*Blog Home*/
+section.blog_home {
+  padding: var(--nav-height) 0 0 2rem;
+}
+section.blog_home .top_custom_div {
+  display: flex;
+  justify-content: space-between;
+}
+section.blog_home .table_background_sub {
+  width: 90%;
+}
+section.blog_home .post_btn_div {
+  display: flex;
+  justify-content: end;
+  margin-right: 10%;
+}
+section.blog_home .p_div_custom {
+  padding-left: 10%;
+}
+section.blog_home .table_contents {
+  font-size: 0.7em;
+  background: var(--bs-primary);
+  margin: 0 0 0 0;
+  padding-top: 5px;
+  border-color: var(--bs-secondary);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  width: 90%;
+  padding: 2% 2% 0 2%;
+}
+section.blog_home .table_contents .table_custom {
+  padding: 0 5% 0 5%;
+}
+section.blog_home .dash_id_button:hover {
+  background: #E54E4E;
+  background-size: contain;
+  padding: 3px 7px 5px;
+  top: -5px;
+  right: -5px;
+}
+section.blog_home table.dataTable.display tbody tr.odd > .sorting_1, section.blog_home table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+  background-color: var(--bs-cyan);
+}
+section.blog_home table.dataTable.order-column tbody tr > .sorting_1, section.blog_home table.dataTable.order-column tbody tr > .sorting_2, section.blog_home table.dataTable.order-column tbody tr > .sorting_3, section.blog_home table.dataTable.display tbody tr > .sorting_1, section.blog_home table.dataTable.display tbody tr > .sorting_2, section.blog_home table.dataTable.display tbody tr > .sorting_3 {
+  background-color: var(--bs-success);
+}
+
+/*Blog Post Edit*/
+section.blog_edit {
+  padding: var(--nav-height) 0 60px 30px;
+  font-size: 2rem;
+}
+section.blog_edit .blog_form_div {
+  border: 1px solid;
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+  background-color: var(--bs-gray-500);
+  margin: 2% 5% 2% 0;
+}
+section.blog_edit .blog_form_div .blog_form_sub_top {
+  padding: 20px 0 50px 5%;
+}
+section.blog_edit .blog_form_div .blog_form_sub_top .input_custom {
+  width: 95%;
+}
+section.blog_edit .blog_form_div .blog_form_sub_top .textarea_custom {
+  width: 95%;
+}
+section.blog_edit .blog_form_div .blog_form_sub_top .blog_form_input_div {
+  min-width: 150px;
+  max-width: 80%;
+}
+section.blog_edit .blog_form_div .table_background_sub {
+  margin: 0 0 0 5%;
+  width: 90%;
+}
+section.blog_edit .blog_form_div .table_background_sub .word_row_column {
+  width: 10%;
+}
+section.blog_edit .blog_form_div .table_background_sub .row_tag_column {
+  width: 20%;
+}
+section.blog_edit .blog_form_div .table_background_sub .row_html_column {
+  width: 70%;
+}
+section.blog_edit .blog_form_div .table_background_sub .form_custom {
+  padding: 0;
+}
+section.blog_edit .blog_form_div .table_background_sub .table_custom_fit {
+  width: 90%;
+}
+section.blog_edit .blog_form_div #Progress_Status {
+  width: 50%;
+  background-color: #ddd;
+  margin-left: 30px;
+}
+section.blog_edit .blog_form_div #myprogressBar {
+  /* Starting point of progress bar */
+  width: 0;
+  height: 20px;
+  background-color: #4CAF50;
+}
+section.blog_edit .blog_form_div .merge_cons_lines {
+  padding: 20px 5% 50px 5%;
+}
+section.blog_edit .blog_form_div .merge_cons_lines .merge_cons_lines_sub {
+  border: 1px solid;
+  border-radius: 10px;
+}
+section.blog_edit .blog_form_div .merge_cons_lines .merge_cons_lines_sub .line_number {
+  width: 40px;
+}
+section.blog_edit .blog_form_div .blog_form_buttons {
+  padding: 0 0 50px 20px;
+}
+section.blog_edit .blog_form_div .blog_form_buttons .button_custom {
+  background-color: var(--bs-cyan);
+}
+section.blog_edit .blog_form_div .blog_form_buttons .file_custom {
+  min-width: 150px;
+  width: 56%;
+}
+section.blog_edit .blog_form_div .blog_form_buttons .button_div_right {
+  width: 90%;
+  padding: 0 0 50px 20px;
+}
+section.blog_edit .blog_form_div .blog_form_buttons .button_div_right .btn_custom {
+  float: right;
+  background: var(--bs-teal);
+  width: 10em;
+  font-size: 1.3em;
+  border-radius: 10px;
+}
+section.blog_edit .id_button_delete:hover {
+  background: #E54E4E;
+  background-size: contain;
+  padding: 3px 7px 5px;
+  top: -5px;
+  right: -5px;
+  border-radius: 10px;
+}
+section.blog_edit .id_button_merge:hover {
+  background: var(--bs-teal);
+  background-size: contain;
+  padding: 3px 7px 5px;
+  top: -5px;
+  right: -5px;
+  border-radius: 10px;
+}
+section.blog_edit .id_button_hide {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .sectionWriting_big {
+    padding: 1em;
+    margin-left: 3em;
+    background-color: var(--bs-gray-800);
+    border-radius: 0.75em;
+  }
+  .sectionWriting_big h2 {
+    color: var(--bs-gray-400);
+  }
+  .sectionWriting {
+    padding: 0.5em 4em 1em 3em; /*background-color:rgb(180, 180, 0)*/
+  }
+}
+@media only screen and (min-width: 768px) {
+  section.blog {
+    padding: var(--nav-height) 0 60px 90px;
+  }
+  section.blog h1 {
+    margin-left: -20px;
+  }
+  section.blog .image_custom {
+    padding: 0 0 0 60px;
+  }
+  section.blog .image_custom img {
+    max-width: 700px;
+    height: auto;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  section.blog_index .blog_index_content .data_tools_list {
+    width: 80%;
+  }
+  section.blog_index .blog_index_content h1 {
+    padding: 0 0 0 5%;
+  }
+}
 :root {
   --nav-height: 123px;
   --table-chart-width: 100%;
@@ -11428,6 +11809,9 @@ section.account .account_body .account_grid .submit_element_right {
 }
 section.account .account_body .account_grid .submit_element_right input {
   font-size: 1.5rem;
+}
+section.account .account_body .account_grid .submit_element_right .btn_account {
+  background-color: var(--bs-gray-600);
 }
 section.account .account_body .add_apple_link_right {
   display: flex;

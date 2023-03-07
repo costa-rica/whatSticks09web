@@ -1,7 +1,7 @@
 from flask import current_app, url_for
 from flask_login import current_user
 from datetime import datetime, timedelta
-from ws09_models import sess, engine, Apple_health_export
+from ws09_models import sess, engine, text, Apple_health_export
 import time
 from app_package import mail
 import os
@@ -24,7 +24,7 @@ logger_main.setLevel(logging.DEBUG)
 
 
 #where do we store logging information
-file_handler = RotatingFileHandler(os.path.join(os.environ.get('WS_ROOT_WEB'),"logs",'users_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(os.environ.get('WEB_ROOT'),"logs",'users_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
 file_handler.setFormatter(formatter)
 
 #where the stream_handler will print
@@ -166,7 +166,7 @@ def add_apple_to_db(xml_dict):
 
     #get all user's existing apple_health data into df
     base_query = sess.query(Apple_health_export).filter_by(user_id = 1)
-    df_existing = pd.read_sql(str(base_query)[:-1] + str(current_user.id), sess.bind)
+    df_existing = pd.read_sql(text(str(base_query)[:-1] + str(current_user.id)), engine.connect())
 
     logger_main.info(f'current user has {len(df_existing)} rows')
     

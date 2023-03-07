@@ -3,7 +3,7 @@ from flask import current_app
 from datetime import datetime, timedelta
 import os
 # from flask import current_app
-from ws09_models import sess, Oura_sleep_descriptions, Weather_history, User_location_day, \
+from ws09_models import sess, engine, text, Oura_sleep_descriptions, Weather_history, User_location_day, \
     Apple_health_export
 import pandas as pd
 # from flask_login import current_user
@@ -25,7 +25,7 @@ logger_main.setLevel(logging.DEBUG)
 # logger_terminal.setLevel(logging.DEBUG)
 
 #where do we store logging information
-file_handler = RotatingFileHandler(os.path.join(os.environ.get('WS_ROOT_WEB'),"logs",'users_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(os.environ.get('WEB_ROOT'),"logs",'users_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
 file_handler.setFormatter(formatter)
 
 #where the stream_handler will print
@@ -50,10 +50,11 @@ def create_raw_df(USER_ID, table, table_name):
 
     if table_name != "weather_history_":
         base_query = sess.query(table).filter_by(user_id = 1)
-        df = pd.read_sql(str(base_query)[:-1] + str(USER_ID), sess.bind)
+        # df = pd.read_sql(str(base_query)[:-1] + str(USER_ID), sess.bind)
+        df = pd.read_sql(text(str(base_query)[:-1] + str(USER_ID)), engine.connect())
     else:
         base_query = sess.query(table)
-        df = pd.read_sql(str(base_query), sess.bind)
+        df = pd.read_sql(text(str(base_query)), engine.connect())
     if len(df) == 0:
         return False
     

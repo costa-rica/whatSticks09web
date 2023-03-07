@@ -51,7 +51,7 @@ logger_main.setLevel(logging.DEBUG)
 
 #where do we store logging information
 # file_handler = RotatingFileHandler(os.path.join(logs_dir,'main_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
-file_handler = RotatingFileHandler(os.path.join(os.environ.get('WS_ROOT_WEB'),"logs",'main_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(os.environ.get('WEB_ROOT'),"logs",'main_routes.log'), mode='a', maxBytes=5*1024*1024,backupCount=2)
 file_handler.setFormatter(formatter)
 
 #where the stream_handler will print
@@ -119,7 +119,7 @@ def login():
                 flash('Must enter password', 'warning')
         elif formDict.get('btn_login_as_guest'):
             # TODO: Need a better way to find guest account
-            user = sess.query(Users).filter_by(id=2).first()
+            user = sess.query(Users).filter_by(guest_account=1).first()
             login_user(user)
 
             return redirect(url_for('dash.dashboard', dash_dependent_var='steps'))
@@ -177,33 +177,47 @@ def account():
     logger_main.info(f"--- user accessed Accounts")
     page_name = 'Account Page'
     email = current_user.email
+    username = current_user.username
 
     logger_main.info(f'Current User: {current_user.email}')
 
     user = sess.query(Users).filter_by(id = current_user.id).first()
 
+    request_args = request.args
+    update_data = request_args.get('update_data')
+    print(request_args)
+    # if update_data == 'true':
+
+    print("- what are the request.args: ", request_args)
+
     if user.lat == None or user.lat == '':
         existing_coordinates = ''
         city_name = ''
     else:
+        logger_main.info(f'-- user already has location --')
         existing_coordinates = f'{user.lat}, {user.lon}'
         location =sess.query(Locations).get(location_exists(user))
         city_name = f"{location.city}, {location.country}"
 
 
     if request.method == 'POST':
-        if current_user.id == 2:
+        formDict = request.form.to_dict()
+        if current_user.guest_account == True:
             flash('Guest can enter any values but they will not change the database', 'info')
             return redirect(url_for('main.account'))
+        elif formDict.get('update_screen')=="true":
+            return redirect(url_for('main.account', update_data="true"))
+
         else:
             startTime_post = time.time()
-            formDict = request.form.to_dict()
+            
             new_location = formDict.get('location_text')
             email = formDict.get('email')
+            username = formDict.get('username')
             # yesterday = datetime.today() - timedelta(days=1)
             # yesterday_formatted =  yesterday.strftime('%Y-%m-%d')
 
-            #2) User adds location data
+            #1) User adds location data
             if new_location != existing_coordinates:
                 if new_location == '':                          #<--- User is removing their location data
                     user.lat = None
@@ -301,7 +315,7 @@ def account():
 
 
 
-            #3) User changes email
+            #2) User changes email
             if email != user.email:
 
                 #check that not blank
@@ -322,6 +336,15 @@ def account():
                 flash('Email successfully updated.', 'info')
                 return redirect(url_for('main.account'))
 
+            #3) Username
+            if username != user.username:
+                # change user name in db
+
+                user.username = username
+                sess.commit()
+
+
+
             #END of POST
             executionTime = (time.time() - startTime_post)
             logger_main.info('POST time in seconds: ' + str(executionTime))
@@ -330,7 +353,8 @@ def account():
 
     print('existing_coordinates: ', existing_coordinates)
     return render_template('main/accounts.html', page_name = page_name, email=email,
-        location_coords = existing_coordinates, city_name = city_name)
+        location_coords = existing_coordinates, city_name = city_name, update_data=update_data,
+        username=username)
 
 
 @main.route('/add_apple', methods=["GET", "POST"])
@@ -391,8 +415,9 @@ def add_apple():
 
                     with open(new_file_path, 'r') as xml_file:
                         xml_dict = xmltodict.parse(xml_file.read())
-                    
-
+                        
+                    # print("xml_dict: ", type(xml_dict))
+                    # print(xml_dict.keys())
                     
                 except:
                     #Trying to fix file
@@ -429,10 +454,10 @@ def add_apple():
                 logger_main.info(f"--- Apple export is large. Send to API (/store_apple_health). Email user when complete ---")
                 headers = { 'Content-Type': 'application/json'}
                 payload = {}
-                payload['password'] = current_app.config.get('WSH_API_PASSWORD')
+                payload['password'] = current_app.config.get('WS_API_PASSWORD')
                 payload['user_id'] = current_user.id
                 payload['xml_file_name'] = xml_file_name
-                r_store_apple = requests.request('GET', current_app.config.get('WSH_API_URL_BASE') + '/store_apple_health', headers=headers, 
+                r_store_apple = requests.request('GET', current_app.config.get('WS_API_URL_BASE') + '/store_apple_health', headers=headers, 
                                  data=str(json.dumps(payload)))
                 logger_main.info(f'-- Sent api file processing request. Response status code: {r_store_apple.status_code}')
                 
@@ -488,7 +513,7 @@ def add_apple():
         create_df_files_apple(USER_ID,['apple_health_step_count'], 'Step Count', 'sum', 'HKQuantityTypeIdentifierStepCount')
 
         return redirect(url_for('main.add_apple'))
-    return render_template('add_apple.html', apple_records=apple_records, isinstance=isinstance, str=str)
+    return render_template('main/add_apple.html', apple_records=apple_records, isinstance=isinstance, str=str)
 
 
 @main.route('/add_more_apple', methods=['GET', 'POST'])
@@ -603,7 +628,7 @@ def add_more_apple():
             return redirect(url_for('main.apple_closer_look', data_item_id= data_item_id))
         return redirect(url_for('main.add_more_apple'))
 
-    return render_template('add_apple_more.html', df_records_list=df_records_list,
+    return render_template('main/add_apple_more.html', df_records_list=df_records_list,
     df_records_list_dict=df_records_list_dict,
         list_of_forms=list_of_forms)
 
@@ -611,7 +636,7 @@ def add_more_apple():
 @main.route('/under_construction')
 @login_required
 def under_construction():
-    return render_template('under_construction.html')
+    return render_template('main/under_construction.html')
 
 @main.route('/apple_closer_look/<data_item_id>', methods=["GET", "POST"])
 @login_required
@@ -722,15 +747,11 @@ def apple_closer_look(data_item_id):
             ))
 
 
-
-
-
-    return render_template('add_apple_closer_look.html', data_item_name_show = data_item_name_show,
+    return render_template('main/add_apple_closer_look.html', data_item_name_show = data_item_name_show,
         col_names=col_names, df_records_list = df_records_list, source_name_list=source_name_list,
         source_version_list=source_version_list, unit_list=unit_list, check_all=check_all,
         abbrev_df_message = abbrev_df_message
         )
-
 
 
 @main.route('/add_oura', methods=["GET", "POST"])
@@ -810,15 +831,15 @@ def add_oura():
                 # --> 1-1b-1b) if no data yesterday, call API
                 if not oura_yesterday and new_token != '':
 
-                    if testing_oura:# use local json file
-                        json_utils_dir = r"/Users/nick/Documents/_testData/json_utils_dir_FromScheduler"
-                        with open(os.path.join(json_utils_dir, '_oura2_call_oura_api.json')) as json_file:
-                            sleep_dict = json.loads(json.load(json_file))
+                    # if testing_oura:# use local json file
+                    #     json_utils_dir = r"/Users/nick/Documents/_testData/json_utils_dir_FromScheduler"
+                    #     with open(os.path.join(json_utils_dir, '_oura2_call_oura_api.json')) as json_file:
+                    #         sleep_dict = json.loads(json.load(json_file))
 
-                        sleep_dict = sleep_dict.get(str(current_user.id))
-                        logger_main.info(f"--- Adding oura data from Local json file ---")
-                    else:# Make api call
-                        sleep_dict = oura_sleep_call(new_token)
+                    #     sleep_dict = sleep_dict.get(str(current_user.id))
+                    #     logger_main.info(f"--- Adding oura data from Local json file ---")
+                    # else:# Make api call
+                    sleep_dict = oura_sleep_call(new_token)
 
 
 
@@ -882,9 +903,8 @@ def add_oura():
         
         return redirect(url_for('main.add_oura'))
 
-    return render_template('add_oura.html', oura_sleep_records = oura_sleep_records,
+    return render_template('main/add_oura.html', oura_sleep_records = oura_sleep_records,
         oura_token = oura_token)
-
 
 
 @main.route('/add_more_weather', methods=["GET","POST"])
@@ -984,9 +1004,8 @@ def add_more_weather():
     # one_month_ago_str = one_month_ago.strftime("%Y-%m-%d")
 
 
-    return render_template('add_more_weather.html', oldest_date = oldest_date, oldest_date_str=oldest_date_str,
+    return render_template('main/add_more_weather.html', oldest_date = oldest_date, oldest_date_str=oldest_date_str,
         hist_limit_date=hist_limit_date)
-
 
 
 @main.route('/admin', methods=["GET", "POST"])
@@ -1174,4 +1193,4 @@ def privacy():
 @main.route('/YouTube_OAuth_Cred_Request')
 def youtube_request():
     page_name = 'YouTub OAuth 2.0 Credentials Request'
-    return render_template('youtube.html', page_name = page_name)
+    return render_template('main/youtube.html', page_name = page_name)

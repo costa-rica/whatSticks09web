@@ -9,21 +9,15 @@
         
     <!-- Import the Bootstrap stylesheet -->
     <script src="../static/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="../static/node_modules/jquery/dist/jquery.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="../static/node_modules/bootstrap/dist/css/bootstrap.css"/> -->
+    <script src="../static/other_js_css/jquery-3.6.0.js"></script>
+
 
     <!-- Data Tables -->
-    <link rel="stylesheet" type="text/css" href="../static/datatables/datatables.min.css"/>
-    <script type="text/javascript" src="../static/datatables/datatables.min.js"></script>
-    <!-- Grandfathering this one in case something stops workign but I think I just need the bottom two
-        <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../static/other_js_css/datatables.min.css"/>
+    <script type="text/javascript" src="../static/other_js_css/datatables.min.js"></script>
 
-
-
-
-
-
-    <title>whatsticks</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/icon.png">
+    <title>What Sticks</title>
 </head>
 <body >
     <section class="navbar_section">
@@ -59,13 +53,13 @@
                 {% if current_user.is_authenticated %}
                 <br>
                 
-                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_index') }}">Blog</a></li>
                 <li class="nav-item dropdown li_primary">
                     <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown2"role="button"
                         data-bs-toggle="dropdown"aria-expanded="false">Dashboards</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                        <a class="dropdown-item dropdown-item_custom" href="">Sleep</a>
-                        <a class="dropdown-item dropdown-item_custom" href="">Steps</a>
+                        <a class="dropdown-item dropdown-item_custom" href="{{ url_for('dash.dashboard', dash_dependent_var='sleep') }}">Sleep</a>
+                        <a class="dropdown-item dropdown-item_custom" href="{{ url_for('dash.dashboard', dash_dependent_var='steps') }}">Steps</a>
                     </div>
                 </li>
 
@@ -73,7 +67,7 @@
                 <br><br>
                 
                     {% if current_user.post_blog_permission %}
-                    <li class="nav-item li_primary"><a class="nav-link" href="">My Blog Posts</a></li> 
+                    <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_user_home') }}">My Blog Posts</a></li> 
 
 
                     {% endif %}

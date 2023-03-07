@@ -1,5 +1,6 @@
 {% extends "_layout.html" %}
 {% block main %}
+<form method="POST" id="form01"></form>
 
 <section class="account">
 
@@ -8,40 +9,49 @@
             Account page
         </div>
 
-        <form method="POST" action="" >
+        <!-- <form method="POST" action="" > -->
             <div class="account_grid">
             
                 
                 <div class="label"><label>Email:</label></div>
-                <input type="text" name="email" class="register_text" value="{{ email }}">
-<!-- 
-
-                <button type="button" class="btn_to_label" data-bs-toggle="modal" 
-                    data-bs-target="#activityModal"><u>Oura Ring Token: </u>
-                </button>
-                <input type="text" id="oura_token" name="oura_token" class="register_text"
-                    value="{{ oura_token }}"> -->
+                {% if update_data == 'true' %}
+                <input type="text" name="email" class="register_text" value="{{ email }}" form="form01">
+                {% else %}
+                <input type="text" name="email" class="register_text" value="{{ email }}" form="form01" readonly>
+                {% endif %}
+                
+                <div class="label"><label>Username:</label></div>
+                {% if update_data == 'true' %}
+                <input type="text" name="username" class="register_text" value="{{ username }}" form="form01">
+                {% else %}
+                <input type="text" name="username" class="register_text" value="{{ username }}" form="form01" readonly>
+                {% endif %}
                 
                 
                 <label for="location_text">Location:</label>
                 <div class="location_input_and_check">
-
+                    {% if update_data == 'true' %}
                     <input type="text" id="location_text" name="location_text" class="register_text"
-                    placeholder="Latitude, Longitude" value = "{{ location_coords }}">
+                    placeholder="Latitude, Longitude" value = "{{ location_coords }}" form="form01">
+                    {% else %}
+                    <input type="text" id="location_text" name="location_text" class="register_text"
+                    placeholder="Latitude, Longitude" value = "{{ location_coords }}" form="form01" readonly>
+                    {% endif %}
                     
                     <input type="text" id="city_name_textbox" name="city_name_textbox" class="register_text disabled_input"
-                    value="{{ city_name }}" readonly>
+                    value="{{ city_name }}" form="form01" readonly>
 
                     {% if city_name != "2" %}
                     <small class="small_font">*If you wish to remove your location from WS, delete the coordinates and update.</small>
                     {% endif %}
 
                     <div class="element_right">
-                        <input class="btn btn-secondary btn_loc" type="button" value=""
-                            onclick="getLocation()">
-                        <label class="form-check-label password_checkbox">
-                            Get Location
-                        </label>
+                        {% if update_data == 'true' %}
+                        <input class="btn btn-secondary btn_loc" type="button" value="" onclick="getLocation()" >
+                        {% else %}
+                        <input class="btn btn-secondary btn_loc" type="button" value="" onclick="getLocation()" disabled>
+                        {% endif %}
+                        <label class="form-check-label password_checkbox">Get Location</label>
                     </div>
 
 
@@ -50,7 +60,12 @@
                 <br>
 
                 <div class="submit_element_right">
-                    <input type="submit" value="Update" class="btn btn-secondary btn_custom01">
+                    {% if update_data == 'true' %}
+                    <input type="submit" value="Update" class="btn btn-secondary btn_custom01" form="form01">
+                    {% else %}
+                    <!-- <input type="submit" value="Update" class="btn btn-secondary btn_custom01"> -->
+                    <button type="submit" name="update_screen" value="true" class="btn_custom01 btn_account" form="form01">Unlock Screen</button>
+                    {% endif %}
                 </div>
              
                 
@@ -58,7 +73,7 @@
             
 
             </div>
-        </form>
+        <!-- </form> -->
         
         <br>
         <h2>Manage Your Data </h2>
