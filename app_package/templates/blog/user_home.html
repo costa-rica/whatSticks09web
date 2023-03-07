@@ -13,8 +13,9 @@
     
   </p>
   <div class="post_btn_div">
+    {% if not current_user.guest_account %}
     <a class="btn btn-info extra_padding" href="{{ url_for('blog.blog_post') }}">Post</a>
-
+    {% endif %}
   </div>
 </div>
 

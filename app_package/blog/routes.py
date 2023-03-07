@@ -69,6 +69,7 @@ def blog_index():
                 temp_dict['date_published'] = temp_dict['date_published'].strftime("%b %d %Y")
                 # temp_dict={key: getattr(post,key)  for key in items}
                 temp_dict['blog_name']=post.blog_id_name_string
+                temp_dict['username'] = sess.query(Users).filter_by(id = post.user_id).first().username
                 # temp_dict={key: (getattr(post,key) if key=='date_published' else getattr(post,key)[:9] ) for key in items}
                 blog_dict_for_index_sorted[post.id]=temp_dict
                 posts_list.remove(post)
@@ -76,15 +77,32 @@ def blog_index():
     return render_template('blog/index.html', blog_dicts_for_index=blog_dict_for_index_sorted)
 
 
-@blog.route("/blog/<blog_name>", methods=["GET"])
+@blog.route("/blog/<blog_name>", methods=["GET","POST"])
 def blog_template(blog_name):
 
     post_html = "blog/posts/" + blog_name + ".html"
 
     post=sess.query(communityposts).filter_by(blog_id_name_string=blog_name).first()
     date = post.date_published.strftime("%m/%d/%Y")
+    username = sess.query(Users).filter_by(id = post.user_id).first().username
 
-    return render_template('blog/template.html', post_html=post_html, date=date)
+    # get comments
+    comments = sess.query(communitycomments).filter_by(post_id=post.id).all()
+
+    if request.method == 'POST':
+        formDict = request.form.to_dict()
+        print("formDict: ", formDict)
+        if current_user.guest_account == True:
+            flash('Guest cannot edit data.', 'info')
+            return redirect(url_for('blog.blog_template',blog_name=blog_name))
+        
+        new_comment = communitycomments(user_id=current_user.id, post_id=post.id, comment=formDict.get('comment'))
+        sess.add(new_comment)
+        sess.commit()
+        flash("Comment successfully added!", "success")
+        return redirect(url_for('blog.blog_template',blog_name=blog_name))
+
+    return render_template('blog/template.html', post_html=post_html, date=date, username=username, comments = comments)
 
 
 @blog.route("/post", methods=["GET","POST"])

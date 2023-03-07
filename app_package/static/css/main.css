@@ -11288,6 +11288,25 @@ section.blog .date_div {
   float: inline-end;
   padding-right: 20%;
 }
+section.blog .comments_section {
+  border: 2px solid var(--bs-gray-600);
+  border-radius: 1rem;
+  padding: 1rem;
+  color: var(--bs-gray-500);
+}
+section.blog .add_comment_section {
+  width: 90%;
+}
+section.blog .add_comment_section .submit_element_right {
+  display: flex;
+  justify-content: end;
+}
+section.blog .add_comment_section .submit_element_right input {
+  font-size: 1.5rem;
+}
+section.blog .add_comment_section .submit_element_right .btn_account {
+  background-color: var(--bs-gray-400);
+}
 
 /*Blog Post*/
 section.blog_post {

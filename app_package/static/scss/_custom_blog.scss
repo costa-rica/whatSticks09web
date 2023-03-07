@@ -148,6 +148,29 @@ section.blog{
         padding-right: 20%;
     }
 
+    .comments_section{
+        border: 2px solid var(--bs-gray-600);
+        // border-width: .5em;
+        border-radius: 1rem;
+        // background-color: var(--bs-primary);
+        padding: 1rem;
+        color: var(--bs-gray-500);
+    }
+
+    .add_comment_section{
+        width:90%;
+        .submit_element_right{
+            display:flex;
+            justify-content:end;
+            input{
+                font-size: 1.5rem;
+            }
+            .btn_account{
+                background-color: var(--bs-gray-400);
+            }               
+        }
+    }
+
 }
 
 /*Blog Post*/

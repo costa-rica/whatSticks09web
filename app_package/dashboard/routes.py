@@ -58,6 +58,15 @@ def dashboard(dash_dependent_var):
     elif dash_dependent_var == 'steps':
         dash_dependent_var = 'apple_health_step_count'
     # USER_ID = current_user.id if current_user.id !=2 else 1
+    
+    # GUEST user #
+    if current_user.guest_account:
+        guest_account_mirror_user = sess.query(Users).filter_by(guest_account_mirror=True).first()
+        USER_ID = guest_account_mirror_user.id
+        print("-- caught guest_account ---")
+    else:
+        USER_ID = current_user.id
+        print("-- did NOT caught guest_account ---")
 
 
     data_item_list = user_data_item_list_util(USER_ID)

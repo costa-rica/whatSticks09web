@@ -39,7 +39,7 @@
             <div class="middle_nav_div">
                 <h1>What Sticks</h1>
                 {% if current_user.is_authenticated %}
-                <h3>{{ current_user.email }}</h3>
+                <h3>{{ current_user.username }}</h3>
                 {% endif %}
             </div>
         </div>
@@ -83,7 +83,7 @@
 
 
 
-                <li class="nav-item li_primary"><a class="nav-link" href="">Blog</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.blog_index') }}">Blog</a></li>
                 <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
                 <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
                 

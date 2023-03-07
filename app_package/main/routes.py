@@ -203,7 +203,7 @@ def account():
     if request.method == 'POST':
         formDict = request.form.to_dict()
         if current_user.guest_account == True:
-            flash('Guest can enter any values but they will not change the database', 'info')
+            flash('Guest cannot edit data.', 'info')
             return redirect(url_for('main.account'))
         elif formDict.get('update_screen')=="true":
             return redirect(url_for('main.account', update_data="true"))
@@ -361,7 +361,12 @@ def account():
 @login_required
 def add_apple():
 
-    USER_ID = current_user.id if current_user.id !=2 else 1
+    # GUEST user #
+    if current_user.guest_account:
+        guest_account_mirror_user = sess.query(Users).filter_by(guest_account_mirror=True).first()
+        USER_ID = guest_account_mirror_user.id
+    else:
+        USER_ID = current_user.id
     # existing_records = sess.query(Apple_health_export).filter_by(user_id=current_user.id).all()
     file_name = f'user{USER_ID}_df_browse_apple.pkl'
     file_path = os.path.join(current_app.config.get('DF_FILES_DIR'), file_name)
@@ -378,9 +383,10 @@ def add_apple():
     start_post_time = time.time()
 
     if request.method == 'POST':
-        if current_user.id ==2:
-            flash("Guest cannot change data. Register and then add data.", "info")
+        if current_user.guest_account == True:
+            flash("Guest cannot add data. Register and then add data.", "info")
             return redirect(url_for('main.add_apple'))
+
         filesDict = request.files
         apple_health_data = filesDict.get('apple_health_data')
 
@@ -520,7 +526,12 @@ def add_apple():
 @login_required
 def add_more_apple():
     # table_name = 'apple_health_export_'
-    USER_ID = current_user.id if current_user.id !=2 else 1
+    # GUEST user #
+    if current_user.guest_account:
+        guest_account_mirror_user = sess.query(Users).filter_by(guest_account_mirror=True).first()
+        USER_ID = guest_account_mirror_user.id
+    else:
+        USER_ID = current_user.id
     file_name = f'user{USER_ID}_df_browse_apple.pkl'
     file_path = os.path.join(current_app.config.get('DF_FILES_DIR'), file_name)
     
@@ -539,8 +550,8 @@ def add_more_apple():
 
     if request.method == 'POST':
 
-        if current_user.id ==2:
-            flash("Guest cannot change data. Register and then add data.", "info")
+        if current_user.guest_account == True:
+            flash("Guest cannot add data. Register and then add data.", "info")
             return redirect(url_for('main.add_more_apple'))
 
         formDict = request.form.to_dict()
@@ -642,7 +653,14 @@ def under_construction():
 @login_required
 def apple_closer_look(data_item_id):
     print(' -- ENTERED apple_closer_look --')
-    USER_ID = current_user.id if current_user.id !=2 else 1
+    # USER_ID = current_user.id if current_user.id !=2 else 1
+    # GUEST user #
+    if current_user.guest_account:
+        guest_account_mirror_user = sess.query(Users).filter_by(guest_account_mirror=True).first()
+        USER_ID = guest_account_mirror_user.id
+    else:
+        USER_ID = current_user.id
+        
     browse_file_name = f'user{USER_ID}_df_browse_apple.pkl'
     browse_file_path = os.path.join(current_app.config.get('DF_FILES_DIR'), browse_file_name)
     df = pd.read_pickle(browse_file_path)
@@ -780,7 +798,7 @@ def add_oura():
     if request.method == 'POST':
         formDict = request.form.to_dict()
         logger_main.info(formDict)
-        if current_user.id ==2:
+        if current_user.guest_account == True:
             flash("Guest cannot change data. Register and then add data.", "info")
             return redirect(url_for('main.add_oura'))
 
@@ -913,7 +931,14 @@ def add_more_weather():
     if current_user.lat == None:
         flash("Must add location before adding more weather data", "warning")
         return redirect(url_for('main.account'))
-    USER_ID = current_user.id if current_user.id !=2 else 1
+    # USER_ID = current_user.id if current_user.id !=2 else 1
+    # GUEST user #
+    if current_user.guest_account:
+        guest_account_mirror_user = sess.query(Users).filter_by(guest_account_mirror=True).first()
+        USER_ID = guest_account_mirror_user.id
+    else:
+        USER_ID = current_user.id
+
     file_path = current_app.config.get('DF_FILES_DIR')
     oldest_date_str = user_oldest_day_util(USER_ID, file_path)
     print('USErs oldest_date_str: ', oldest_date_str)
@@ -932,6 +957,9 @@ def add_more_weather():
     
     if request.method == 'POST':
         logger_main.info(f"- POST request in add_more_weather -")
+        if current_user.guest_account == True:
+            flash("Guest cannot change data. Register and then add data.", "info")
+            return redirect(url_for('main.add_more_weather'))
         formDict = request.form.to_dict()
         oldest_date_str = formDict.get('get_data_from_date')
 
