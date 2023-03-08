@@ -1,5 +1,6 @@
 from flask import Flask
-from ws09_config import ConfigLocal, ConfigDev, ConfigProd
+# from ws09_config import ConfigLocal, ConfigDev, ConfigProd
+from app_package import config
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -10,15 +11,15 @@ from datetime import datetime
 from ws09_models import login_manager
 from flask_mail import Mail
 
-if os.environ.get('CONFIG_TYPE')=='local':
-    config = ConfigLocal()
-    print('- Personalwebsite/__init__: Development - Local')
-elif os.environ.get('CONFIG_TYPE')=='dev':
-    config = ConfigDev()
-    print('- Personalwebsite/__init__: Development')
-elif os.environ.get('CONFIG_TYPE')=='prod':
-    config = ConfigProd()
-    print('- Personalwebsite/__init__: Configured for Production')
+# if os.environ.get('CONFIG_TYPE')=='local':
+#     config = ConfigLocal()
+#     print('- Personalwebsite/__init__: Development - Local')
+# elif os.environ.get('CONFIG_TYPE')=='dev':
+#     config = ConfigDev()
+#     print('- Personalwebsite/__init__: Development')
+# elif os.environ.get('CONFIG_TYPE')=='prod':
+#     config = ConfigProd()
+#     print('- Personalwebsite/__init__: Configured for Production')
 
 
 if not os.path.exists(os.path.join(os.environ.get('WEB_ROOT'),'logs')):
