@@ -7,7 +7,8 @@ from sqlalchemy import func
 import json
 from flask_login import login_user, current_user, logout_user, login_required
 # from app_package.blog.forms import BlogPostForm
-from app_package.blog.utils import create_new_html_text, get_title, save_post_html, save_post_images
+from app_package.blog.utils import create_new_html_text, get_title, save_post_html, save_post_images, \
+    build_comment_dict
 # last_first_list_util, wordToJson, \
 #     word_docs_dir_util
 from ws09_models import sess, Users, communityposts, communitycomments, newsposts, newscomments
@@ -45,7 +46,7 @@ logger_blog.addHandler(stream_handler)
 blog = Blueprint('blog', __name__)
     
 @blog.route("/blog", methods=["GET"])
-def blog_index():
+def post_index():
 
     #make sure word doc folder exits with in static folder
     # word_docs_dir_util()
@@ -66,9 +67,9 @@ def blog_index():
             if post.date_published == i:
                 # temp_dict={key: (getattr(post,key) if key!='date_published' else getattr(post,key).strftime("%b %d %Y") ) for key in items}
                 temp_dict = {key: getattr(post, key) for key in items}
-                temp_dict['date_published'] = temp_dict['date_published'].strftime("%b %d %Y")
+                temp_dict['date_published'] = temp_dict['date_published'].strftime("%-d %b %Y")
                 # temp_dict={key: getattr(post,key)  for key in items}
-                temp_dict['blog_name']=post.blog_id_name_string
+                temp_dict['blog_name']=post.post_id_name_string
                 temp_dict['username'] = sess.query(Users).filter_by(id = post.user_id).first().username
                 # temp_dict={key: (getattr(post,key) if key=='date_published' else getattr(post,key)[:9] ) for key in items}
                 blog_dict_for_index_sorted[post.id]=temp_dict
@@ -82,12 +83,31 @@ def blog_template(blog_name):
 
     post_html = "blog/posts/" + blog_name + ".html"
 
-    post=sess.query(communityposts).filter_by(blog_id_name_string=blog_name).first()
-    date = post.date_published.strftime("%m/%d/%Y")
-    username = sess.query(Users).filter_by(id = post.user_id).first().username
+    post=sess.query(communityposts).filter_by(post_id_name_string=blog_name).first()
+    post_date = post.date_published.strftime("%-d %B %Y")
+    post_username = sess.query(Users).filter_by(id = post.user_id).first().username
 
     # get comments
-    comments = sess.query(communitycomments).filter_by(post_id=post.id).all()
+    comments_query_list = sess.query(communitycomments).filter_by(post_id=post.id).all()
+
+    comments_list = build_comment_dict(comments_query_list)
+    # #create dictionary
+    # comments_list = []
+
+    # for comment in comments_query_list:
+    #     temp_dict = {}
+    #     #get comment author
+    #     temp_dict["comment_id"] = comment.id
+    #     temp_dict["username"] = sess.query(Users).filter_by(id=comment.user_id).first().username
+
+    #     #get comment date
+    #     temp_dict["date_published"] = comment.date_published.strftime("%Y-%m-%d %H:%M")
+
+    #     # add comment comment
+    #     temp_dict["comment"] = comment.comment
+
+    #     comments_list.append(temp_dict)
+
 
     if request.method == 'POST':
         formDict = request.form.to_dict()
@@ -96,20 +116,30 @@ def blog_template(blog_name):
             flash('Guest cannot edit data.', 'info')
             return redirect(url_for('blog.blog_template',blog_name=blog_name))
         
-        new_comment = communitycomments(user_id=current_user.id, post_id=post.id, comment=formDict.get('comment'))
-        sess.add(new_comment)
-        sess.commit()
-        flash("Comment successfully added!", "success")
-        return redirect(url_for('blog.blog_template',blog_name=blog_name))
+        elif formDict.get('submit_comment_add'):
+            new_comment = communitycomments(user_id=current_user.id, post_id=post.id, comment=formDict.get('comment'))
+            sess.add(new_comment)
+            sess.commit()
+            flash("Comment successfully added!", "success")
+            return redirect(url_for('blog.blog_template',blog_name=blog_name))
+        
+        elif formDict.get('delete_comment'):
+            comment_id_to_delete = formDict.get('delete_comment')
+            sess.query(communitycomments).filter_by(id=int(comment_id_to_delete)).delete()
+            sess.commit()
+            flash(f"Deleted comment id: {comment_id_to_delete}", "warning")
+            return redirect(url_for('blog.blog_template',blog_name=blog_name))
 
-    return render_template('blog/template.html', post_html=post_html, date=date, username=username, comments = comments)
+
+    return render_template('blog/view_post.html', post_html=post_html, post_date=post_date, post_username=post_username,
+        comments_list = comments_list)
 
 
 @blog.route("/post", methods=["GET","POST"])
 @login_required
 def blog_post():
     if not current_user.post_blog_permission:
-        return redirect(url_for('blog.blog_index'))
+        return redirect(url_for('blog.post_index'))
 
     logger_blog.info(f"- user has blog post permission -")
 
@@ -126,7 +156,7 @@ def blog_post():
                 
         #check if templates/blog/posts exists
         if not os.path.exists(file_path_str_to_templates_blog_posts):
-            logger_dash.info(f"- making templates/blog/posts dir -")
+            logger_blog.info(f"- making templates/blog/posts dir -")
             os.mkdir(file_path_str_to_templates_blog_posts)
 
 
@@ -137,19 +167,19 @@ def blog_post():
             return redirect(request.url)
 
         # Save blog_post_html to templates/blog/posts/
-        blog_id_name_string, blog_post_new_name = save_post_html(formDict, post_html_file, 
+        post_id_name_string, blog_post_new_name = save_post_html(formDict, post_html_file, 
                                 file_path_str_to_templates_blog_posts, post_html_filename)
 
         # Save images to static/images/blog/000id/ <-- if there is a filename
         if post_images_zip.filename != "":
             logger_blog.info(f"- post_images_zip is not None -")
 
-            save_post_images(post_images_zip, blog_id_name_string, blog_post_new_name)
+            save_post_images(post_images_zip, post_id_name_string, blog_post_new_name)
 
 
         flash(f'Post added successfully!', 'success')
 
-    return render_template('blog/post.html')
+    return render_template('blog/make_post.html')
 
 
 @blog.route("/blog_user_home", methods=["GET","POST"])
@@ -159,7 +189,7 @@ def blog_user_home():
     logger_blog.info(f"- In blog_user_home -")
 
     if not current_user.post_blog_permission:
-        return redirect(url_for('blog.blog_index'))
+        return redirect(url_for('blog.post_index'))
 
 
     #check, create directories between db/ and static/
@@ -197,7 +227,7 @@ def blog_delete(post_id):
     post_to_delete = sess.query(communityposts).get(int(post_id))
 
     if current_user.id != post_to_delete.user_id:
-        return redirect(url_for('blog.blog_index'))
+        return redirect(url_for('blog.post_index'))
     logger_blog.info('-- In delete route --')
     logger_blog.info(f'post_id:: {post_id}')
 
@@ -211,7 +241,7 @@ def blog_delete(post_id):
 
 
     post_to_delete = sess.query(communityposts).get(int(post_id))
-    logger_blog.info(f"--- name of blog file: {post_to_delete.blog_id_name_string }")
+    logger_blog.info(f"--- name of blog file: {post_to_delete.post_id_name_string }")
     # blog_name = 'blog'+post_id.zfill(4)
     # print(post_to_delete)
     
@@ -220,7 +250,7 @@ def blog_delete(post_id):
 
     try:# word doc from database folder
         file_path_str_to_templates_blog_posts = os.path.join(current_app.config.root_path,"templates","blog","posts")
-        os.remove(os.path.join(file_path_str_to_templates_blog_posts, post_to_delete.blog_id_name_string + ".html"))
+        os.remove(os.path.join(file_path_str_to_templates_blog_posts, post_to_delete.post_id_name_string + ".html"))
         # os.remove(os.path.join(word_doc_path_static, post_to_delete.word_doc))
     except:
         # logger_blog.info(f'no word document file exists')
@@ -228,9 +258,9 @@ def blog_delete(post_id):
     
     #delete images folder
     try:# static folder
-        shutil.rmtree(os.path.join(current_app.static_folder, 'images','communityposts', post_to_delete.blog_id_name_string))
+        shutil.rmtree(os.path.join(current_app.static_folder, 'images','communityposts', post_to_delete.post_id_name_string))
     except:
-        logger_blog.info(f'No {post_to_delete.blog_id_name_string} in static folder')
+        logger_blog.info(f'No {post_to_delete.post_id_name_string} in static folder')
 
     # try:# database folder
     #     shutil.rmtree(os.path.join(current_app.config.get('WORD_DOC_DIR'),'blog_images', blog_name))
@@ -249,7 +279,7 @@ def blog_delete(post_id):
 @login_required
 def blog_edit():
     if current_user.id != 1:
-        return redirect(url_for('blog.blog_index'))
+        return redirect(url_for('blog.post_index'))
     print('** Start blog edit **')
     post_id = int(request.args.get('post_id'))
     post = sess.query(Posts).filter_by(id = post_id).first()

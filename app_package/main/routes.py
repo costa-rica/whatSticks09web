@@ -85,7 +85,7 @@ def home():
         keys = latest_post.__table__.columns.keys()
         blog = {key: getattr(latest_post, key) for key in keys}
         # blog['blog_name']='blog'+str(latest_post.id).zfill(4)
-        blog['blog_name'] = latest_post.blog_id_name_string
+        blog['blog_name'] = latest_post.post_id_name_string
         blog['date_published'] = blog['date_published'].strftime("%b %d %Y")
     else:
         blog =''
@@ -136,6 +136,10 @@ def register():
     if request.method == 'POST':
         formDict = request.form.to_dict()
         new_email = formDict.get('email')
+
+        if new_email.find('@') < 1:
+            flash(f'Email field not proper format.', 'warning')
+            return redirect(url_for('main.register'))
 
         check_email = sess.query(Users).filter_by(email = new_email).all()
         if len(check_email)==1:

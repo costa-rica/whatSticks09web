@@ -1,0 +1,76 @@
+{% extends "_layout.html" %}
+{% block main %}
+<form method="POST" id="form01"></form>
+
+<section class="blog">
+
+    <section class="post">
+
+        {% include post_html %}
+        <br>
+    
+        <div class="date_div">
+            
+                {{ post_date }}
+                <br>
+                <div class="username">
+                    by {{ post_username }}
+                </div>
+                
+            
+
+        </div>
+    </div>
+    
+    <br>
+    
+    
+    </section>
+    <hr>
+    <section class="comments">
+        <h3>Comments</h3>
+        {% for comment in comments_list %}
+        <div class="comments_posted ">
+            
+
+            {{ comment.comment }}
+
+            <div class="comment_details">
+                <div class="comment_name_date">
+                    {{ comment.username }} on {{ comment.date_published}} 
+                </div>
+                
+                <br><br>
+
+                <div>
+               
+                    {% if current_user.username == comment.username %}
+                    
+                    <button type="submit" name="delete_comment" value="{{ comment.comment_id }}" class="delete_button" form="form01">Delete</button>
+                    {% endif %}
+                </div>
+                
+            </div>
+
+
+        </div>
+        {% endfor %}
+
+        <div class="form-group comment_add">
+            
+            <textarea class="form-control textarea_custom" id="comment_add_id" rows="3" name="comment" form="form01" placeholder="Add a comment" ></textarea>
+
+            <div class="submit_element_right">
+                <button type="submit" name="submit_comment_add" value="true" class="btn_custom01 btn_account" form="form01">Submit Comment</button>
+            </div>
+
+            
+        </div>
+    </section>
+    <!-- </div> -->
+    
+
+
+
+</section>
+{% endblock %}

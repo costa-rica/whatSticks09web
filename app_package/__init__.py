@@ -1,6 +1,6 @@
 from flask import Flask
 # from ws09_config import ConfigLocal, ConfigDev, ConfigProd
-from app_package import config
+from app_package.config import config
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -56,6 +56,7 @@ logger_init.info(f'--- Starting What Sticks Web 09 ---')
 mail = Mail()
 
 def create_app(config_for_flask = config):
+
     app = Flask(__name__)   
     app.config.from_object(config_for_flask)
     login_manager.init_app(app)
@@ -64,9 +65,11 @@ def create_app(config_for_flask = config):
     from app_package.main.routes import main
     from app_package.dashboard.routes import dash
     from app_package.blog.routes import blog
+    from app_package.news.routes import news
 
     app.register_blueprint(main)
     app.register_blueprint(dash)
     app.register_blueprint(blog)
+    app.register_blueprint(news)
 
     return app
