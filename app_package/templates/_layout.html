@@ -54,7 +54,7 @@
                 <br>
                 
                 <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('blog.post_index') }}">Blog</a></li>
-                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('news.posts_index') }}">News</a></li>
+                <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('news.posts_index') }}">WS News</a></li>
                 <li class="nav-item dropdown li_primary">
                     <a href="#" class="nav-link dropdown-toggle " id="navbarDropdown2"role="button"
                         data-bs-toggle="dropdown"aria-expanded="false">Dashboards</a>
@@ -76,7 +76,7 @@
                     {% endif %}
 
                     {% if current_user.admin_blog_permission %}
-                        <li class="nav-item li_primary"><a class="nav-link" href="">Admin Blog</a></li>
+                        <!-- <li class="nav-item li_primary"><a class="nav-link" href="">Admin Blog</a></li> -->
                         <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.admin') }}">Admin</a></li>
                     {% endif %}
                     <li class="nav-item li_primary"><a class="nav-link" href="{{ url_for('main.account') }}">Account</a></li>

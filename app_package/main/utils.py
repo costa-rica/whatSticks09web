@@ -92,14 +92,16 @@ If you did not make this request, ignore email and there will be no change
 
 
 def send_confirm_email(email):
-    logger_main.info(f"-- sending email to {email} --")
-    msg = Message('Welcome to What Sticks!',
-        sender=current_app.config.get('MAIL_USERNAME'),
-        recipients=[email])
-    msg.body = 'You have succesfully been registered to What-Sticks.'
-    mail.send(msg)
-    logger_main.info(f"-- email sent --")
-
+    if os.environ.get('CONFIG_TYPE') == 'prod':
+        logger_main.info(f"-- sending email to {email} --")
+        msg = Message('Welcome to What Sticks!',
+            sender=current_app.config.get('MAIL_USERNAME'),
+            recipients=[email])
+        msg.body = 'You have succesfully been registered to What-Sticks.'
+        mail.send(msg)
+        logger_main.info(f"-- email sent --")
+    else :
+        logger_main.info(f"-- Non prod mode so no email sent --")
 
 def call_location_api(user):
 #2-1b-1) call weather API

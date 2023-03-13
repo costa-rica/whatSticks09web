@@ -39,12 +39,8 @@ def get_title(html_file_path_and_name):
     with open(html_file_path_and_name) as fp:
         soup = BeautifulSoup(fp, 'html.parser')
 
-    #Get title and replace
-    # if formDict.get('title'):
-    #     soup.p.find('span').contents[0].replaceWith(formDict.get('title'))
-    #     title = formDict.get('title')
-    # else:
-    title = soup.p.find('span').contents[0]
+    soup_p_MsoTitle = soup.find_all("p", {"class": "MsoTitle"})
+    title = soup_p_MsoTitle[0].string
     return title
 
 def create_new_html_text(html_file_path_and_name, static_image_folder_path):
@@ -92,8 +88,8 @@ def save_post_html(formDict, post_html_file, file_path_str_to_templates_news_pos
     sess.add(new_post)
     sess.commit()
 
-    # get id from databse sess.communityposts(blog_id_string="")
-    new_post = sess.query(communityposts).filter_by(post_id_name_string=None).first()
+    # get id from databse sess.newsposts(post_id_string="")
+    new_post = sess.query(newsposts).filter_by(post_id_name_string=None).first()
 
     logger_news.info(f"- new_post is {new_post} -")
 

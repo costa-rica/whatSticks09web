@@ -161,13 +161,13 @@ def save_post_images(post_images_zip, post_id_name_string, blog_post_new_name):
     static_img_communityposts_folder = os.path.join(current_app.static_folder,'images','communityposts')
     static_img_destination_folder = os.path.join(current_app.static_folder,'images','communityposts', post_id_name_string)
 
-    # Make static/images/communitposts/post_id_name_string
+    # Check and/or make static/images/communitposts/
     if not os.path.exists(static_img_communityposts_folder):
         os.mkdir(static_img_communityposts_folder)
 
-    else:
-        if not os.path.exists(static_img_destination_folder):
-            os.mkdir(static_img_destination_folder)
+    # Check and/or make static/images/communitposts/post_id_name_string
+    if not os.path.exists(static_img_destination_folder):
+        os.mkdir(static_img_destination_folder)
 
     # move each image file in the uploaded unzipped static/images/temp_zip to the static/communityposts/post_id_name_string/
     for unzipped_filename in os.listdir(unzipped_folder_name_with_images):

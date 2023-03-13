@@ -1,6 +1,6 @@
 {% extends "_layout.html" %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block main %}
 
@@ -12,25 +12,25 @@
         <!-- form method=POST -->
     
             <ul class="data_tools_list">
-                {% for _, blog in blog_dicts_for_index.items() %}
+                {% for _, post in post_dicts_for_index.items() %}
                     
                 <li>
-                    <a href="{{ url_for('blog.blog_template', blog_name=blog['blog_name']) }}">
+                    <a href="{{ url_for('news.view_post', post_name=post['post_name']) }}">
                         <div class="data_tool_div">
     
                                 <div class="title_div">
     
-                                    <h2>{{ blog['title'] }}</h2>
+                                    <h2>{{ post['title'] }}</h2>
     
                                 </div>
     
                                 <div class="date_div">
-                                    {{ blog['date_published'] }}<br>
-                                    by {{ blog['username'] }}
+                                    {{ post['date_published'] }}<br>
+                                    by {{ post['username'] }}
                                 </div>
     
                                 <div class="data_tools_description">
-                                    {{ blog['description'] }}
+                                    {{ post['description'] }}
                                     
                                 </div>
                             

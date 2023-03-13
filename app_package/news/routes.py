@@ -60,7 +60,7 @@ def posts_index():
     #make dict of title, date_published, description
     items=['title', 'description','date_published' ]
     posts_list = sess.query(newsposts).all()
-    blog_dict_for_index_sorted={}
+    post_dict_for_index_sorted={}
     for i in sorted_date_pub_list:
         for post in posts_list:
             if post.date_published == i:
@@ -71,10 +71,10 @@ def posts_index():
                 temp_dict['post_name']=post.post_id_name_string
                 temp_dict['username'] = sess.query(Users).filter_by(id = post.user_id).first().username
                 # temp_dict={key: (getattr(post,key) if key=='date_published' else getattr(post,key)[:9] ) for key in items}
-                blog_dict_for_index_sorted[post.id]=temp_dict
+                post_dict_for_index_sorted[post.id]=temp_dict
                 posts_list.remove(post)
 
-    return render_template('news/index.html', blog_dicts_for_index=blog_dict_for_index_sorted)
+    return render_template('news/index.html', post_dicts_for_index=post_dict_for_index_sorted)
 
 
 @news.route("/news/<post_name>", methods=["GET","POST"])

@@ -154,6 +154,7 @@ def register():
 
         # Send email confirming succesfull registration
         try:
+            
             send_confirm_email(new_email)
         except:
             flash(f'Problem with email: {new_email}', 'warning')
@@ -163,7 +164,10 @@ def register():
         print('--- new_user ---')
         print(new_user)
         login_user(new_user)
-        flash(f'Succesfully registered: {new_email}', 'info')
+        if os.environ.get('CONFIG_TYPE') == 'prod':
+            flash(f'Succesfully registered: {new_email}', 'info')
+        else:
+            flash(f'Succesfully registered: {new_email} * No email sent due to non-prod config *', 'info')
         return redirect(url_for('main.login'))
 
     return render_template('main/register.html', page_name = page_name)
@@ -956,6 +960,7 @@ def add_more_weather():
 
     #Make a store visual crossing api weather call folder to store calls in case I
     # make a call that doesn't get stored
+    logs_dir = os.path.join(os.environ.get('WEB_ROOT'),"logs")
     vc_api_calls_dir = os.path.join(logs_dir, "vc_api_call_responses")
     make_dir_util(vc_api_calls_dir)
     
@@ -1043,7 +1048,7 @@ def add_more_weather():
 @main.route('/admin', methods=["GET", "POST"])
 @login_required
 def admin():
-    if current_user.id != 1:
+    if current_user.admin_users_permission != 1:
         return redirect(url_for('main.login'))
     list_of_users = sess.query(Users).all()
     list_of_notes = [user.notes for user in list_of_users]

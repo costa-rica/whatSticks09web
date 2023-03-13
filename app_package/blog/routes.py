@@ -173,6 +173,8 @@ def blog_post():
         # Save images to static/images/blog/000id/ <-- if there is a filename
         if post_images_zip.filename != "":
             logger_blog.info(f"- post_images_zip is not None -")
+        
+            # check if static/images/
 
             save_post_images(post_images_zip, post_id_name_string, blog_post_new_name)
 

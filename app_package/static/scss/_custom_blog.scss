@@ -1,8 +1,8 @@
 
 /*Blog Index*/
-section.blog_index{
+section.post_index{
     padding: var(--nav-height) 0 0 0;
-    .blog_index_content{
+    .post_index_content{
         padding: 2rem 0 0 0;
         display: flex;
         flex-wrap: wrap;
@@ -106,16 +106,6 @@ section.blog{
             // flex-wrap: wrap;
             justify-content: end;
         }
-        // background-color: #E54E4E;
-        // .date_div_sub{
-        //     display: block;
-        //     margin-left: auto; 
-        //     margin-right: 0;
-        //     // display: flex;
-        //     // flex-wrap: wrap;
-        //     // flex: end;
-        //     // background-color: #4CAF50;
-        // }
     }
 
     section.comments {
@@ -167,62 +157,12 @@ section.blog{
         }
     }
 
-    // ul{padding: 0 60px 0 40px;margin:0;}
-
-    // .standard_paragraph{
-    //     padding: 0 60px 0 20px;
-    //     // background-color: red;
-    //     // img {
-    //     //     max-width: 700px;
-    //     //     height: auto;
-    //     // }
-    // }
-    // .image_custom{
-    //     padding: 0 0 0 5px;
-    //     img {
-    //         max-width: 90%;
-    //         height: auto;
-    //     }
-    // }
-    // .caption_custom_div{
-    //     padding: 10px 60px 0 65px;
-    // }
-    // .caption_custom{
-    //     // color:var(--bs-secondary);
-    //     font-size: 1.2rem;
-    //     padding-bottom:0;
-    //     margin-bottom:0;
-    //     // padding-left: 100px;
-    // }
-    // .indent_paragraph{
-    //     // padding-left:60px;
-    //     padding: 0 20px 0 60px;
-    // }
-    // .indent_code{
-    //     // padding-left:60px;
-    //     // padding-right: 60px;
-    //     margin:0;
-    //     padding: 0 120px 10px 60px;
-    // }
-    // .indent_code_background{
-    //     background-color: var(--bs-primary);
-    //     // padding-left: 5px;
-    //     // padding-right: 5px;
-    //     padding: 0 10px 5px 10px;
-    //     margin:0 0 0 0;
-    //     // height: 1.2rem;
-    //     line-height: .75em;
-    // }
-    // .code_font_color{
-    //     color: white;
-    //     margin:0;
-    //     padding:0;
-    // }
-    // .date_div{
-    //     float:inline-end;
-    //     padding-right: 20%;
-    // }
-
+    .iframe_embed{
+        // background-color: red;
+        width: 100%;
+        // height:auto;
+        height:50vh;
+    }
 
 
 }
